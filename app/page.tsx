@@ -7,7 +7,6 @@ import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
-import SpotifyWidget from "./components/SpotifyWidget";
 import { personal } from "./data/portfolio";
 
 export default function Home() {
@@ -27,9 +26,6 @@ export default function Home() {
         <Projects />
         <Contact />
       </main>
-
-      {/* Spotify now playing — only renders when configured + a song is playing */}
-      <SpotifyWidget />
 
       {/* Footer */}
       <footer className="py-10 px-6 border-t border-white/[0.04] text-center">
