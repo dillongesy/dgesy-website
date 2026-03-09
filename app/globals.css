@@ -1,26 +1,185 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #030712;
+  --color-surface: #0f172a;
+  --color-accent-indigo: #818cf8;
+  --color-accent-cyan: #22d3ee;
+  --color-accent-purple: #a78bfa;
+  --color-text-primary: #f1f5f9;
+  --color-text-muted: #64748b;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #030712;
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #818cf8, #22d3ee);
+  border-radius: 2px;
+}
+
+/* Text selection */
+::selection {
+  background: rgba(129, 140, 248, 0.25);
+  color: #f1f5f9;
+}
+
+/* ─── Gradient text ─────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #818cf8 0%, #22d3ee 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-warm {
+  background: linear-gradient(135deg, #f472b6 0%, #fb923c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glitch effect ─────────────────────────────── */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.glitch-text::before {
+  color: #22d3ee;
+  animation: glitch-clip-1 7s infinite;
+  opacity: 0;
+}
+
+.glitch-text::after {
+  color: #f43f5e;
+  animation: glitch-clip-2 7s infinite;
+  opacity: 0;
+}
+
+@keyframes glitch-clip-1 {
+  0%, 4%, 100%   { opacity: 0; transform: none; clip-path: none; }
+  1%             { opacity: 1; clip-path: polygon(0 15%, 100% 15%, 100% 40%, 0 40%); transform: translate(-4px, -2px); }
+  2%             { opacity: 1; clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%); transform: translate(4px, 2px); }
+  3%             { opacity: 1; clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); transform: translate(-2px, 4px); }
+}
+
+@keyframes glitch-clip-2 {
+  0%, 4%, 100%   { opacity: 0; transform: none; clip-path: none; }
+  1.4%           { opacity: 1; clip-path: polygon(0 5%, 100% 5%, 100% 30%, 0 30%);  transform: translate(4px, -2px); }
+  2.4%           { opacity: 1; clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); transform: translate(-4px, 2px); }
+  3.4%           { opacity: 1; clip-path: polygon(0 75%, 100% 75%, 100% 95%, 0 95%); transform: translate(2px, -4px); }
+}
+
+/* ─── Float animation ───────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ─── Pulse ring ────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ─── Shimmer ───────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(129, 140, 248, 0) 0%,
+    rgba(129, 140, 248, 0.4) 50%,
+    rgba(129, 140, 248, 0) 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+}
+
+/* ─── Scan line ─────────────────────────────────── */
+@keyframes scanline {
+  0%   { top: -5%; }
+  100% { top: 105%; }
+}
+
+/* ─── Gradient border ───────────────────────────── */
+.gradient-border {
+  position: relative;
+  background: #0f172a;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #818cf8, #22d3ee, #a78bfa);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Glow utilities ────────────────────────────── */
+.glow-indigo {
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.25), 0 0 60px rgba(129, 140, 248, 0.1);
+}
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25), 0 0 60px rgba(34, 211, 238, 0.1);
+}
+.text-glow-indigo {
+  text-shadow: 0 0 20px rgba(129, 140, 248, 0.8), 0 0 40px rgba(129, 140, 248, 0.4);
+}
+
+/* ─── Section spacing ───────────────────────────── */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
 }
