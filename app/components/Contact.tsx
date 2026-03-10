@@ -62,7 +62,7 @@ export default function Contact() {
           custom={1}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
         >
-          Let&apos;s <span className="gradient-text">work together</span>
+          Let&apos;s <span className="gradient-text">start building</span>
         </motion.h2>
 
         <motion.p

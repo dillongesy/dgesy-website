@@ -4,19 +4,40 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-// ─── Palette ─────────────────────────────────────────────────────────────────
-const PALETTE = [
-  new THREE.Color("#818cf8"), // indigo-400
-  new THREE.Color("#22d3ee"), // cyan-400
-  new THREE.Color("#a78bfa"), // violet-400
-  new THREE.Color("#38bdf8"), // sky-400
+// ─── Palette themes ───────────────────────────────────────────────────────────
+const PALETTE_THEMES = [
+  [new THREE.Color("#818cf8"), new THREE.Color("#22d3ee"), new THREE.Color("#a78bfa"), new THREE.Color("#38bdf8")],
+  [new THREE.Color("#f472b6"), new THREE.Color("#fb7185"), new THREE.Color("#e879f9"), new THREE.Color("#c084fc")],
+  [new THREE.Color("#34d399"), new THREE.Color("#4ade80"), new THREE.Color("#22d3ee"), new THREE.Color("#2dd4bf")],
+  [new THREE.Color("#fbbf24"), new THREE.Color("#f97316"), new THREE.Color("#fb923c"), new THREE.Color("#facc15")],
 ];
 
+const THEME_ACCENTS = [
+  { line: new THREE.Color("#818cf8"), glow: new THREE.Color("#22d3ee"), atm: new THREE.Color("#818cf8") },
+  { line: new THREE.Color("#f472b6"), glow: new THREE.Color("#fb7185"), atm: new THREE.Color("#e879f9") },
+  { line: new THREE.Color("#34d399"), glow: new THREE.Color("#22d3ee"), atm: new THREE.Color("#34d399") },
+  { line: new THREE.Color("#fbbf24"), glow: new THREE.Color("#f97316"), atm: new THREE.Color("#fbbf24") },
+];
+
+const SWITCH_INTERVAL = 5;     // seconds between color changes
+const TRANSITION_DURATION = 2; // seconds for lerp
+
+function buildColors(count: number, paletteIndex: number) {
+  const palette = PALETTE_THEMES[paletteIndex];
+  const colors = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const c = palette[i % palette.length];
+    colors[i * 3]     = c.r;
+    colors[i * 3 + 1] = c.g;
+    colors[i * 3 + 2] = c.b;
+  }
+  return colors;
+}
+
 // ─── Fibonacci sphere distribution ───────────────────────────────────────────
-function fibonacciSphere(count: number, radius: number) {
+function fibonacciSphere(count: number, radius: number, paletteIndex: number) {
   const phi = Math.PI * (Math.sqrt(5) - 1);
   const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
 
   for (let i = 0; i < count; i++) {
     const y = 1 - (i / (count - 1)) * 2;
@@ -26,12 +47,9 @@ function fibonacciSphere(count: number, radius: number) {
     positions[i * 3]     = Math.cos(theta) * r * radius;
     positions[i * 3 + 1] = y * radius;
     positions[i * 3 + 2] = Math.sin(theta) * r * radius;
-
-    const c = PALETTE[i % PALETTE.length];
-    colors[i * 3]     = c.r;
-    colors[i * 3 + 1] = c.g;
-    colors[i * 3 + 2] = c.b;
   }
+
+  const colors = buildColors(count, paletteIndex);
   return { positions, colors };
 }
 
@@ -58,41 +76,94 @@ function buildEdges(positions: Float32Array, threshold: number) {
 
 // ─── Inner scene ─────────────────────────────────────────────────────────────
 function OrbScene() {
-  const groupRef = useRef<THREE.Group>(null!);
-  const { mouse } = useThree();
+  const groupRef    = useRef<THREE.Group>(null!);
+  const pointsRef   = useRef<THREE.Points>(null!);
+  const lineMatRef  = useRef<THREE.LineBasicMaterial>(null!);
+  const glowMatRef  = useRef<THREE.MeshBasicMaterial>(null!);
+  const atmMatRef   = useRef<THREE.MeshBasicMaterial>(null!);
+  const { mouse }   = useThree();
 
   const POINT_COUNT = 320;
-  const RADIUS = 2.4;
+  const RADIUS = 1.9;
 
-  const { positions, colors } = useMemo(
-    () => fibonacciSphere(POINT_COUNT, RADIUS),
-    []
-  );
+  const { positions } = useMemo(() => fibonacciSphere(POINT_COUNT, RADIUS, 0), []);
 
-  const linePositions = useMemo(
-    () => buildEdges(positions, 1.35),
-    [positions]
-  );
+  const linePositions = useMemo(() => buildEdges(positions, 1.1), [positions]);
 
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
+  // Mutable color state (refs, never triggers re-render)
+  const colorState = useRef({
+    themeIndex:  0,
+    nextIndex:   1,
+    fromColors:  buildColors(POINT_COUNT, 0),
+    toColors:    buildColors(POINT_COUNT, 1),
+    workColors:  buildColors(POINT_COUNT, 0).slice() as Float32Array,
+    progress:    1,   // start at 1 = no transition running
+    timer:       SWITCH_INTERVAL,
+    fromLine:    THEME_ACCENTS[0].line.clone(),
+    fromGlow:    THEME_ACCENTS[0].glow.clone(),
+    fromAtm:     THEME_ACCENTS[0].atm.clone(),
+  });
+
+  const initialColors = useMemo(() => buildColors(POINT_COUNT, 0), []);
+
+  useFrame((state, delta) => {
+    const t  = state.clock.elapsedTime;
+    const cs = colorState.current;
+
+    // Rotate orb
     groupRef.current.rotation.y = t * 0.13 + mouse.x * 0.4;
     groupRef.current.rotation.x = t * 0.055 + mouse.y * 0.25;
+
+    // Count down until next switch
+    if (cs.progress >= 1) {
+      cs.timer -= delta;
+      if (cs.timer <= 0) {
+        // Snapshot current colors as the new "from"
+        cs.fromColors.set(cs.workColors);
+        cs.fromLine.copy(lineMatRef.current.color);
+        cs.fromGlow.copy(glowMatRef.current.color);
+        cs.fromAtm.copy(atmMatRef.current.color);
+
+        // Pick a new random different theme
+        let next = Math.floor(Math.random() * PALETTE_THEMES.length);
+        if (next === cs.themeIndex) next = (next + 1) % PALETTE_THEMES.length;
+        cs.themeIndex = next;
+        cs.toColors = buildColors(POINT_COUNT, next);
+
+        cs.progress = 0;
+        cs.timer = SWITCH_INTERVAL;
+      }
+    }
+
+    // Animate transition
+    if (cs.progress < 1) {
+      cs.progress = Math.min(1, cs.progress + delta / TRANSITION_DURATION);
+      const p = cs.progress;
+
+      // Update vertex colors
+      const attr = (pointsRef.current.geometry as THREE.BufferGeometry)
+        .getAttribute("color") as THREE.BufferAttribute;
+      for (let i = 0; i < POINT_COUNT * 3; i++) {
+        cs.workColors[i] = cs.fromColors[i] + (cs.toColors[i] - cs.fromColors[i]) * p;
+      }
+      attr.array = cs.workColors;
+      attr.needsUpdate = true;
+
+      // Update accent materials
+      const accent = THEME_ACCENTS[cs.themeIndex];
+      lineMatRef.current.color.lerpColors(cs.fromLine, accent.line, p);
+      glowMatRef.current.color.lerpColors(cs.fromGlow, accent.glow, p);
+      atmMatRef.current.color.lerpColors(cs.fromAtm, accent.atm, p);
+    }
   });
 
   return (
     <group ref={groupRef}>
       {/* Particle dots */}
-      <points>
+      <points ref={pointsRef}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[positions, 3]}
-          />
-          <bufferAttribute
-            attach="attributes-color"
-            args={[colors, 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-color"    args={[initialColors, 3]} />
         </bufferGeometry>
         <pointsMaterial
           size={0.055}
@@ -108,12 +179,10 @@ function OrbScene() {
       {/* Connecting lines */}
       <lineSegments>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[linePositions, 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
         </bufferGeometry>
         <lineBasicMaterial
+          ref={lineMatRef}
           color="#818cf8"
           transparent
           opacity={0.14}
@@ -124,8 +193,9 @@ function OrbScene() {
 
       {/* Soft inner glow sphere */}
       <mesh>
-        <sphereGeometry args={[1.1, 32, 32]} />
+        <sphereGeometry args={[0.87, 32, 32]} />
         <meshBasicMaterial
+          ref={glowMatRef}
           color="#22d3ee"
           transparent
           opacity={0.04}
@@ -136,8 +206,9 @@ function OrbScene() {
 
       {/* Outer atmosphere */}
       <mesh>
-        <sphereGeometry args={[2.7, 32, 32]} />
+        <sphereGeometry args={[2.15, 32, 32]} />
         <meshBasicMaterial
+          ref={atmMatRef}
           color="#818cf8"
           transparent
           opacity={0.02}

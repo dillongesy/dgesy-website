@@ -26,9 +26,11 @@ export default function Hero() {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Particle background */}
-      <ParticleCanvas />
+    <section className="relative min-h-screen flex flex-col items-center justify-center">
+      {/* Particle background — overflow-hidden scoped here only */}
+      <div className="absolute inset-0 overflow-hidden">
+        <ParticleCanvas />
+      </div>
 
       {/* Radial gradient — shifts left to match text column */}
       <div
@@ -45,7 +47,7 @@ export default function Hero() {
         style={{
           backgroundImage:
             "linear-gradient(rgba(148,163,184,1) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,1) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+          backgroundSize: "60px 60px"
         }}
       />
 
@@ -59,7 +61,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-black tracking-tighter mb-4 leading-[0.9]"
+            className="text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-black tracking-tighter mb-4 leading-tight"
           >
             <span className="glitch-text gradient-text" data-text={personal.name}>
               {personal.name}
@@ -156,7 +158,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.3 }}
-          className="hidden lg:flex items-center justify-center h-[480px] w-full"
+          className="hidden lg:flex items-center justify-center h-[640px] w-[640px]"
           style={{
             filter: "drop-shadow(0 0 60px rgba(99,102,241,0.2))",
           }}
