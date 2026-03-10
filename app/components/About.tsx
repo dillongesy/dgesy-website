@@ -120,7 +120,7 @@ export default function About() {
               className="space-y-4 text-slate-400 leading-relaxed"
             >
               <p>
-                Hey! I&apos;m <strong className="text-slate-100">{personal.name}</strong> — a {personal.title} based in{" "}
+                Hey! I&apos;m <strong className="text-slate-100">{personal.name}</strong> - a {personal.title} based in{" "}
                 {personal.location}. I graduated from Iowa State University with a 3.63 GPA and have been building
                 production software ever since.
               </p>

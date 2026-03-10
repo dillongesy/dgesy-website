@@ -38,6 +38,18 @@ body {
   border-radius: 2px;
 }
 
+/* Wider scrollbar when mouse is near right edge */
+body.scrollbar-hover::-webkit-scrollbar {
+  width: 20px;
+}
+body.scrollbar-hover ::-webkit-scrollbar {
+  width: 20px;
+}
+body.scrollbar-hover::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a5b4fc, #67e8f9);
+  border-radius: 4px;
+}
+
 /* Text selection */
 ::selection {
   background: rgba(129, 140, 248, 0.25);
@@ -63,6 +75,8 @@ body {
 .glitch-text {
   position: relative;
   display: inline-block;
+  padding-bottom: 0.2em;
+  padding-right: 0.08em;
 }
 
 .glitch-text::before,

@@ -164,7 +164,7 @@ export default function Projects() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-slate-400 mb-12 max-w-xl"
         >
-          A selection of projects I&apos;ve built — some are side experiments, some are production systems.
+          A selection of projects I&apos;ve built - some are side experiments, some are production systems.
         </motion.p>
 
         {/* Featured grid */}

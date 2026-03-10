@@ -10,8 +10,8 @@ export const personal = {
     "Cloud Architect",
     "Embedded System Solver",
   ],
-  bio: "Full-stack software engineer & IT network engineer ith a BS in Software Engineering from Iowa State. I build production-ready systems — from serverless AWS backends to cross-platform mobile apps — and ship things real users actually use.",
-  location: "Iowa, USA",
+  bio: "Full-stack software engineer & IT network engineer with a BS in Software Engineering from Iowa State. I build production-ready systems — from serverless AWS backends to cross-platform mobile apps — and ship things real users actually use.",
+  location: "Iowa",
   email: "dillon.gesy@yahoo.com",
   phone: "(+1) 712-269-4631",
   github: "https://github.com/dillongesy",
@@ -98,7 +98,7 @@ export const experience: Job[] = [
     location: "Manilla, IA",
     bullets: [
       "Oversee and maintain IT infrastructure for 100+ clients including camera systems, networking hardware, and custom software solutions.",
-      "Spearheaded the design and development of a cross-platform mobile ordering app (iOS/Android) for Wesco Industries using React Native CLI, secured with AWS Cognito authentication.",
+      "Spearheaded the design and development of a cross-platform mobile ordering app (iOS/Android) for a non-profit using React Native CLI, secured with AWS Cognito authentication.",
       "Engineered a scalable serverless AWS backend (Lambda, API Gateway, RDS) integrating the Square API for real-time payment processing and a full loyalty rewards program.",
       "Built a full-stack Next.js admin portal empowering non-technical staff with dynamic control over menus, store hours, and a Firebase push notification system (FCM) for promotions.",
       "Developed inventory management software solutions for both internal and external client use."
@@ -122,7 +122,7 @@ export const projects: Project[] = [
   {
     title: "The Bakeshop Mobile Ordering App",
     description:
-      "Production cross-platform mobile app (iOS/Android) for a real business. AWS Cognito auth, serverless backend, Square payment processing, loyalty rewards, and a full Next.js admin portal with Firebase push notifications.",
+      "Production cross-platform mobile app (iOS/Android) for an empowering restaurant. AWS Cognito auth, serverless backend, Square payment processing, loyalty rewards, and a full Next.js admin portal with Firebase push notifications.",
     tech: ["React Native", "Next.js", "AWS", "Square API", "FCM", "SQL"],
     featured: true,
   },
