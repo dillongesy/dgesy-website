@@ -125,7 +125,7 @@ export default function About() {
                 production software ever since.
               </p>
               <p>
-                I thrive working across the full stack — from serverless AWS architectures to pixel-perfect
+                I thrive working across the full stack - from serverless AWS architectures to pixel-perfect
                 React UIs to embedded C++ systems. When I&apos;m not shipping, I&apos;m{" "}
                 <span className="text-cyan-400">over-engineering my side projects</span>.
               </p>
