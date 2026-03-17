@@ -10,7 +10,7 @@ export const personal = {
     "Cloud Architect",
     "Embedded System Solver",
   ],
-  bio: "Full-stack software engineer & IT network engineer with a BS in Software Engineering from Iowa State. I build production-ready systems — from serverless AWS backends to cross-platform mobile apps — and ship things real users actually use.",
+  bio: "Full-stack software engineer & IT network engineer with a BS in Software Engineering from Iowa State. I build production-ready systems - from serverless AWS backends to cross-platform mobile apps - and ship things real users actually use.",
   location: "Iowa",
   email: "dillon.gesy@yahoo.com",
   phone: "(+1) 712-269-4631",
