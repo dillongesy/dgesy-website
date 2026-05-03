@@ -71,7 +71,7 @@ export default function Hero() {
             className="max-w-lg text-slate-400 text-base sm:text-lg leading-relaxed mb-9"
           >
             Software and IT engineer based in Iowa. I build things that actually work - mobile apps,
-            cloud backends, web portals, network infrastructure. Iowa State grad, class of 2024.
+            cloud backends, web portals, and network infrastructure, just to name a few. Iowa State grad, class of 2024.
           </motion.p>
 
           <motion.div
