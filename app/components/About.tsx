@@ -6,7 +6,7 @@ import { MapPin, GraduationCap, BookOpen } from "lucide-react";
 
 const stats = [
   { label: "Years Coding",  value: 5,  suffix: "+" },
-  { label: "Apps Shipped",  value: 6,  suffix: "+" },
+  { label: "Apps Created",  value: 6,  suffix: "+" },
   { label: "Technologies",  value: 20, suffix: "+" },
   { label: "Active Users",  value: 50, suffix: "+" },
 ];

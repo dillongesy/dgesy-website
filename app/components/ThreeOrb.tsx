@@ -79,7 +79,6 @@ function OrbScene() {
   const groupRef    = useRef<THREE.Group>(null!);
   const pointsRef   = useRef<THREE.Points>(null!);
   const lineMatRef  = useRef<THREE.LineBasicMaterial>(null!);
-  const glowMatRef  = useRef<THREE.MeshBasicMaterial>(null!);
   const atmMatRef   = useRef<THREE.MeshBasicMaterial>(null!);
   const { mouse }   = useThree();
 
@@ -100,7 +99,6 @@ function OrbScene() {
     progress:    1,   // start at 1 = no transition running
     timer:       SWITCH_INTERVAL,
     fromLine:    THEME_ACCENTS[0].line.clone(),
-    fromGlow:    THEME_ACCENTS[0].glow.clone(),
     fromAtm:     THEME_ACCENTS[0].atm.clone(),
   });
 
@@ -121,7 +119,6 @@ function OrbScene() {
         // Snapshot current colors as the new "from"
         cs.fromColors.set(cs.workColors);
         cs.fromLine.copy(lineMatRef.current.color);
-        cs.fromGlow.copy(glowMatRef.current.color);
         cs.fromAtm.copy(atmMatRef.current.color);
 
         // Pick a new random different theme
@@ -152,7 +149,6 @@ function OrbScene() {
       // Update accent materials
       const accent = THEME_ACCENTS[cs.themeIndex];
       lineMatRef.current.color.lerpColors(cs.fromLine, accent.line, p);
-      glowMatRef.current.color.lerpColors(cs.fromGlow, accent.glow, p);
       atmMatRef.current.color.lerpColors(cs.fromAtm, accent.atm, p);
     }
   });
@@ -190,19 +186,6 @@ function OrbScene() {
           depthWrite={false}
         />
       </lineSegments>
-
-      {/* Soft inner glow sphere */}
-      <mesh>
-        <sphereGeometry args={[0.87, 32, 32]} />
-        <meshBasicMaterial
-          ref={glowMatRef}
-          color="#22d3ee"
-          transparent
-          opacity={0.04}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </mesh>
 
       {/* Outer atmosphere */}
       <mesh>

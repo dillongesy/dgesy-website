@@ -2,11 +2,13 @@
 
 import { useRef, useState, type MouseEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import { Github, ExternalLink, Star, ArrowRight } from "lucide-react";
 import { projects, type ProjectDetail } from "../projects/data";
 
 function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
+  const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState("rotateX(0deg) rotateY(0deg)");
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
@@ -43,7 +45,8 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
       }}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      style={{ transform, transition: "transform 0.15s ease-out" }}
+      onClick={() => router.push(`/projects/${project.slug}`)}
+      style={{ transform, transition: "transform 0.15s ease-out", cursor: "pointer" }}
       className="group relative rounded-2xl border border-white/[0.07] bg-[#0a0f1e] overflow-hidden flex flex-col"
     >
       <div
@@ -167,7 +170,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-slate-400 mb-12 whitespace-nowrap"
+          className="text-slate-400 mb-12 sm:whitespace-nowrap"
         >
           Some are side projects, some are production systems. Click any card to read the full story.
         </motion.p>
