@@ -10,12 +10,13 @@ interface Particle {
   size: number;
   opacity: number;
   color: string;
+  phase: number;
+  phaseSpeed: number;
 }
 
 const COLORS = ["#818cf8", "#22d3ee", "#a78bfa"];
-const MAX_PARTICLES = 80;
+const MAX_PARTICLES = 160;
 const CONNECTION_DIST = 130;
-const MOUSE_REPEL_DIST = 100;
 
 export default function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,7 +28,6 @@ export default function ParticleCanvas() {
     if (!ctx) return;
 
     let animId: number;
-    const mouse = { x: -9999, y: -9999 };
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -37,47 +37,38 @@ export default function ParticleCanvas() {
 
     const count = Math.min(
       MAX_PARTICLES,
-      Math.floor((window.innerWidth * window.innerHeight) / 14000)
+      Math.floor((window.innerWidth * window.innerHeight) / 6000)
     );
 
     const particles: Particle[] = Array.from({ length: count }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
+      vx: (Math.random() - 0.5) * 1.2,
+      vy: (Math.random() - 0.5) * 1.2,
       size: Math.random() * 1.8 + 0.6,
       opacity: Math.random() * 0.45 + 0.1,
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      phase: Math.random() * Math.PI * 2,
+      phaseSpeed: (Math.random() - 0.5) * 0.008,
     }));
 
-    const onMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
     const onResize = () => resize();
-
-    window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("resize", onResize);
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (const p of particles) {
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MOUSE_REPEL_DIST && dist > 0) {
-          const force = ((MOUSE_REPEL_DIST - dist) / MOUSE_REPEL_DIST) * 0.025;
-          p.vx += (dx / dist) * force;
-          p.vy += (dy / dist) * force;
-        }
+        p.phase += p.phaseSpeed;
+        p.vx += Math.cos(p.phase) * 0.008;
+        p.vy += Math.sin(p.phase) * 0.008;
 
         p.vx *= 0.99;
         p.vy *= 0.99;
         const spd = Math.hypot(p.vx, p.vy);
-        if (spd > 0.9) {
-          p.vx = (p.vx / spd) * 0.9;
-          p.vy = (p.vy / spd) * 0.9;
+        if (spd > 2.0) {
+          p.vx = (p.vx / spd) * 2.0;
+          p.vy = (p.vy / spd) * 2.0;
         }
 
         p.x += p.vx;
@@ -95,7 +86,6 @@ export default function ParticleCanvas() {
         ctx.globalAlpha = 1;
       }
 
-      // Draw connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -122,7 +112,6 @@ export default function ParticleCanvas() {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
     };
   }, []);

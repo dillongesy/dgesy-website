@@ -5,7 +5,40 @@ import { motion, useInView } from "framer-motion";
 import {
   Code2, Layers, Wrench, Cloud, Globe, type LucideIcon,
 } from "lucide-react";
-import { skills, type SkillCategory } from "../data/portfolio";
+
+type SkillCategory = "Language" | "Framework" | "Tool" | "Cloud";
+
+interface Skill {
+  name: string;
+  category: SkillCategory;
+  level: number;
+}
+
+const skills: Skill[] = [
+  { name: "JavaScript",     category: "Language",  level: 5 },
+  { name: "TypeScript",     category: "Language",  level: 4 },
+  { name: "Java",           category: "Language",  level: 4 },
+  { name: "SQL",            category: "Language",  level: 4 },
+  { name: "C / C++",        category: "Language",  level: 3 },
+  { name: "C#",             category: "Language",  level: 3 },
+  { name: "HTML / CSS",     category: "Language",  level: 5 },
+  { name: "React",          category: "Framework", level: 5 },
+  { name: "Next.js",        category: "Framework", level: 5 },
+  { name: "React Native",   category: "Framework", level: 5 },
+  { name: "Node.js",        category: "Framework", level: 4 },
+  { name: "Tailwind CSS",   category: "Framework", level: 5 },
+  { name: "Spring Boot",    category: "Framework", level: 3 },
+  { name: ".NET MAUI",      category: "Framework", level: 3 },
+  { name: "Git / GitLab",   category: "Tool",      level: 5 },
+  { name: "Android Studio", category: "Tool",      level: 4 },
+  { name: "SQLite",         category: "Tool",      level: 4 },
+  { name: "Postman",        category: "Tool",      level: 4 },
+  { name: "VS Code",        category: "Tool",      level: 5 },
+  { name: "AWS Lambda",     category: "Cloud",     level: 4 },
+  { name: "AWS Cognito",    category: "Cloud",     level: 4 },
+  { name: "AWS RDS",        category: "Cloud",     level: 4 },
+  { name: "Vercel",         category: "Cloud",     level: 5 },
+];
 
 type Filter = "All" | SkillCategory;
 const FILTERS: Filter[] = ["All", "Language", "Framework", "Tool", "Cloud"];
@@ -37,9 +70,7 @@ function SkillBar({ level }: { level: number }) {
           key={i}
           className="h-1 flex-1 rounded-full transition-all duration-500"
           style={{
-            background: i < level
-              ? "linear-gradient(90deg, #818cf8, #22d3ee)"
-              : "rgba(255,255,255,0.06)",
+            background: i < level ? "#818cf8" : "rgba(255,255,255,0.06)",
           }}
         />
       ))}
@@ -66,7 +97,6 @@ export default function Skills() {
   return (
     <section id="skills" ref={ref} className="section-padding px-6">
       <div className="max-w-5xl mx-auto">
-        {/* Label */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -75,9 +105,9 @@ export default function Skills() {
           className="flex items-center gap-3 mb-4"
         >
           <span className="text-xs font-mono tracking-widest text-indigo-400 uppercase">
-            02. Skills
+            Skills
           </span>
-          <span className="flex-1 h-px bg-gradient-to-r from-indigo-500/30 to-transparent" />
+          <span className="flex-1 h-px bg-white/[0.06]" />
         </motion.div>
 
         <motion.h2
@@ -87,10 +117,9 @@ export default function Skills() {
           custom={1}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8"
         >
-          My <span className="gradient-text">tech stack</span>
+          My <span className="text-indigo-400">tech stack</span>
         </motion.h2>
 
-        {/* Filter tabs */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -117,7 +146,6 @@ export default function Skills() {
           ))}
         </motion.div>
 
-        {/* Skills grid */}
         <motion.div
           layout
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
@@ -135,7 +163,6 @@ export default function Skills() {
                 whileHover={{ scale: 1.04, y: -4 }}
                 className="group relative rounded-2xl p-4 border border-white/[0.06] bg-white/[0.02] hover:border-indigo-500/20 hover:bg-indigo-500/5 transition-all cursor-default"
               >
-                {/* Glow on hover */}
                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
                   style={{ boxShadow: "0 0 20px rgba(129,140,248,0.08)" }}
                 />

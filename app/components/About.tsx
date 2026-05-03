@@ -2,8 +2,23 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, Sparkles, GraduationCap, BookOpen } from "lucide-react";
-import { personal, stats, education } from "../data/portfolio";
+import { MapPin, GraduationCap, BookOpen } from "lucide-react";
+
+const stats = [
+  { label: "Years Coding",  value: 5,  suffix: "+" },
+  { label: "Apps Shipped",  value: 6,  suffix: "+" },
+  { label: "Technologies",  value: 20, suffix: "+" },
+  { label: "Active Users",  value: 50, suffix: "+" },
+];
+
+const education = {
+  school: "Iowa State University",
+  degree: "Bachelor of Science in Software Engineering",
+  minor: "Minor in Mathematics",
+  period: "Aug 2020 - May 2024",
+  location: "Ames, IA",
+  gpa: "3.63 / 4.0",
+};
 
 function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -52,7 +67,6 @@ export default function About() {
   return (
     <section id="about" ref={sectionRef} className="section-padding px-6">
       <div className="max-w-5xl mx-auto">
-        {/* Section label */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -61,9 +75,9 @@ export default function About() {
           className="flex items-center gap-3 mb-4"
         >
           <span className="text-xs font-mono tracking-widest text-indigo-400 uppercase">
-            01. About
+            About
           </span>
-          <span className="flex-1 h-px bg-gradient-to-r from-indigo-500/30 to-transparent" />
+          <span className="flex-1 h-px bg-white/[0.06]" />
         </motion.div>
 
         <motion.h2
@@ -73,13 +87,11 @@ export default function About() {
           custom={1}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-14"
         >
-          A bit <span className="gradient-text">about me</span>
+          A bit <span className="text-indigo-400">about me</span>
         </motion.h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Left: Avatar + bio */}
           <div className="space-y-6">
-            {/* Avatar card */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -87,31 +99,15 @@ export default function About() {
               custom={2}
               className="relative w-48 h-48"
             >
-              {/* Animated ring */}
-              <div
-                className="absolute inset-0 rounded-2xl"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #818cf8, #22d3ee, #a78bfa, #818cf8)",
-                  backgroundSize: "300% 300%",
-                  animation: "shimmer 4s linear infinite",
-                  padding: "2px",
-                  borderRadius: "16px",
-                }}
-              >
+              <div className="absolute inset-0 rounded-2xl border-2 border-indigo-500/30 p-[2px]">
                 <div className="w-full h-full rounded-[14px] bg-[#0f172a] flex items-center justify-center">
-                  {/* Placeholder avatar — swap with <Image> once you have a photo */}
-                  <div className="text-6xl font-black gradient-text select-none">
-                    {personal.name
-                      .split(" ")
-                      .map((w) => w[0])
-                      .join("")}
+                  <div className="text-6xl font-black text-indigo-400 select-none">
+                    DG
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Bio */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -120,22 +116,28 @@ export default function About() {
               className="space-y-4 text-slate-400 leading-relaxed"
             >
               <p>
-                Hey! I&apos;m <strong className="text-slate-100">{personal.name}</strong> - a {personal.title} based in{" "}
-                {personal.location}. I graduated from Iowa State University with a 3.63 GPA and have been building
-                production software ever since.
+                I grew up in Iowa and studied Software Engineering at Iowa State, graduating in 2024
+                with a 3.63 GPA. Since then I&apos;ve been doing full-stack development and network
+                engineering at Advanced Communication Services, a local IT company in Western Iowa.
               </p>
               <p>
-                I thrive working across the full stack - from serverless AWS architectures to pixel-perfect
-                React UIs to embedded C++ systems. When I&apos;m not shipping, I&apos;m{" "}
-                <span className="text-cyan-400">over-engineering my side projects</span>.
+                I work across a lot of layers - React Native and Next.js on the front, AWS Lambda
+                and RDS on the back, Android and embedded C++ when the job calls for it. Outside of
+                work, I host an overengineered homelab (like this website!) for app development, experiments, 
+                and more.
+              </p>
+              <p>
+                Outside of software engineering, I'm a full-time IT Engineer setting up enterprise networks with 
+                VLANs, TLANs, and standard cyber security practices. I have experience with Ubiquiti, SonicWall, and 
+                Meraki products. The types of offices you may catch me in (but not limited to) are dentistries, 
+                insurance offices, agriculture offices, and various government agencies.
               </p>
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 <MapPin size={14} className="text-indigo-400" />
-                {personal.location}
+                Iowa
               </div>
             </motion.div>
 
-            {/* Fun facts */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -145,23 +147,20 @@ export default function About() {
             >
               {[
                 "IT Network Engineer",
-                "React Native · iOS & Android",
-                "AWS Serverless",
-                "Bot Creator",
-                "Embedded C++",
+                "Full Stack Software Engineer",
+                "React Native / iOS & Android",
+                "AWS Services"
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-white/[0.07] bg-white/[0.03] text-slate-400"
+                  className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium border border-white/[0.07] bg-white/[0.03] text-slate-400"
                 >
-                  <Sparkles size={10} className="text-indigo-400" />
                   {tag}
                 </span>
               ))}
             </motion.div>
           </div>
 
-          {/* Right: Stats */}
           <div className="grid grid-cols-2 gap-4">
             {stats.map((stat, i) => (
               <motion.div
@@ -170,16 +169,15 @@ export default function About() {
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
                 custom={i + 3}
-                className="gradient-border rounded-2xl p-6 group hover:scale-[1.02] transition-transform"
+                className="rounded-2xl p-6 border border-cyan-500/40 bg-[#0f172a] group hover:scale-[1.02] transition-transform"
               >
-                <div className="text-4xl font-black gradient-text mb-2">
+                <div className="text-4xl font-black text-indigo-400 mb-2">
                   <CountUp target={stat.value} suffix={stat.suffix} />
                 </div>
                 <div className="text-sm text-slate-500 font-medium">{stat.label}</div>
               </motion.div>
             ))}
 
-            {/* Education card */}
             <motion.div
               variants={fadeUp}
               initial="hidden"

@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useState, type MouseEvent } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
-import { Github, ExternalLink, Star } from "lucide-react";
-import { projects, type Project } from "../data/portfolio";
+import { Github, ExternalLink, Star, ArrowRight } from "lucide-react";
+import { projects, type ProjectDetail } from "../projects/data";
 
-function TiltCard({ project, i }: { project: Project; i: number }) {
+function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState("rotateX(0deg) rotateY(0deg)");
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
@@ -43,9 +44,8 @@ function TiltCard({ project, i }: { project: Project; i: number }) {
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{ transform, transition: "transform 0.15s ease-out" }}
-      className="group relative rounded-2xl border border-white/[0.07] bg-[#0a0f1e] overflow-hidden cursor-default"
+      className="group relative rounded-2xl border border-white/[0.07] bg-[#0a0f1e] overflow-hidden flex flex-col"
     >
-      {/* Gradient glow that follows the cursor */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
@@ -53,16 +53,10 @@ function TiltCard({ project, i }: { project: Project; i: number }) {
         }}
       />
 
-      {/* Top accent bar */}
-      <div
-        className="h-[2px] w-full"
-        style={{
-          background: "linear-gradient(90deg, #818cf8, #22d3ee, #a78bfa)",
-        }}
-      />
+      <div className="h-[2px] w-full bg-indigo-500/40" />
 
-      <div className="p-6">
-        {/* Header */}
+      <div className="p-6 flex flex-col flex-1">
+        {/* Header row */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-2">
             {project.featured && (
@@ -100,19 +94,17 @@ function TiltCard({ project, i }: { project: Project; i: number }) {
           </div>
         </div>
 
-        {/* Title */}
         <h3 className="text-lg font-bold text-slate-100 group-hover:text-indigo-300 transition-colors mb-2">
           {project.title}
         </h3>
 
-        {/* Description */}
-        <p className="text-sm text-slate-400 leading-relaxed mb-5">
+        <p className="text-sm text-slate-400 leading-relaxed mb-5 flex-1">
           {project.description}
         </p>
 
         {/* Tech stack */}
-        <div className="flex flex-wrap gap-2">
-          {project.tech.map((t) => (
+        <div className="flex flex-wrap gap-2 mb-5">
+          {project.tech.slice(0, 5).map((t) => (
             <span
               key={t}
               className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-400"
@@ -120,7 +112,21 @@ function TiltCard({ project, i }: { project: Project; i: number }) {
               {t}
             </span>
           ))}
+          {project.tech.length > 5 && (
+            <span className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-600">
+              +{project.tech.length - 5}
+            </span>
+          )}
         </div>
+
+        {/* Detail link */}
+        <Link
+          href={`/projects/${project.slug}`}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+        >
+          Read more
+          <ArrowRight size={12} />
+        </Link>
       </div>
     </motion.div>
   );
@@ -136,7 +142,6 @@ export default function Projects() {
   return (
     <section id="projects" ref={ref} className="section-padding px-6">
       <div className="max-w-5xl mx-auto">
-        {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -144,9 +149,9 @@ export default function Projects() {
           className="flex items-center gap-3 mb-4"
         >
           <span className="text-xs font-mono tracking-widest text-indigo-400 uppercase">
-            04. Projects
+            Projects
           </span>
-          <span className="flex-1 h-px bg-gradient-to-r from-indigo-500/30 to-transparent" />
+          <span className="flex-1 h-px bg-white/[0.06]" />
         </motion.div>
 
         <motion.h2
@@ -155,30 +160,28 @@ export default function Projects() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
         >
-          Things I&apos;ve <span className="gradient-text">built</span>
+          Things I&apos;ve <span className="text-indigo-400">built</span>
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-slate-400 mb-12 max-w-xl"
+          className="text-slate-400 mb-12 whitespace-nowrap"
         >
-          A selection of projects I&apos;ve built - some are side experiments, some are production systems.
+          Some are side projects, some are production systems. Click any card to read the full story.
         </motion.p>
 
-        {/* Featured grid */}
         <motion.div
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           className="grid sm:grid-cols-2 gap-5 mb-5"
         >
           {featured.map((p, i) => (
-            <TiltCard key={p.title} project={p} i={i} />
+            <TiltCard key={p.slug} project={p} i={i} />
           ))}
         </motion.div>
 
-        {/* Other projects */}
         {rest.length > 0 && (
           <motion.div
             initial="hidden"
@@ -186,7 +189,7 @@ export default function Projects() {
             className="grid sm:grid-cols-2 md:grid-cols-3 gap-4"
           >
             {rest.map((p, i) => (
-              <TiltCard key={p.title} project={p} i={featured.length + i} />
+              <TiltCard key={p.slug} project={p} i={featured.length + i} />
             ))}
           </motion.div>
         )}

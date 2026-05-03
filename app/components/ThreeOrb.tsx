@@ -84,7 +84,7 @@ function OrbScene() {
   const { mouse }   = useThree();
 
   const POINT_COUNT = 320;
-  const RADIUS = 1.9;
+  const RADIUS = 2.3;
 
   const { positions } = useMemo(() => fibonacciSphere(POINT_COUNT, RADIUS, 0), []);
 
@@ -221,17 +221,17 @@ function OrbScene() {
   );
 }
 
-// ─── Exported canvas wrapper ──────────────────────────────────────────────────
 export default function ThreeOrb() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 6.5], fov: 45 }}
+      camera={{ position: [0, 0, 6.0], fov: 45 }}
       gl={{
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
       }}
-      style={{ background: "transparent" }}
+      style={{ background: "transparent", width: "640px", height: "640px" }}
+      resize={{ scroll: false }}
       dpr={[1, 2]}
     >
       <OrbScene />
