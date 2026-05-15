@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Mail, Github, Linkedin, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
+import { Github, Linkedin } from "./BrandIcons";
 
 const socials = [
   {

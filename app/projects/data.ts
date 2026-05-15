@@ -35,8 +35,8 @@ export const projects: ProjectDetail[] = [
       "/projects/bakeshop/screen-home.png",
       "/projects/bakeshop/screen-menu.png",
       "/projects/bakeshop/screen-rewards.png",
-      "/projects/bakeshop/screen-profile.png",
       "/projects/bakeshop/screen-merch.png",
+      "/projects/bakeshop/screen-profile.png",
       "/projects/bakeshop/dashboard.png",
       "/projects/bakeshop/announcements.png",
       "/projects/bakeshop/categories.png",
@@ -133,8 +133,8 @@ export const projects: ProjectDetail[] = [
     retrospective: {
       overview:
         `PokeDropper didn't initially start as PokeBot. Similar things to this have been done (and probably better!), 
-        but I wanted the dev experience of building an application from the ground up. It started as a weekend project, but
-        it people kept using it and wanted more and more features. Before no time, it became a 
+        but I wanted the dev experience of building an application from the ground up. It started as a weekend project, but 
+        people kept using it and wanted more and more features. Before no time, it became a 
         collecting game with spawns, rare encounters, trades, and a persistent economy with various shops. 
         The fact that it has an actual daily user base was not something I planned for - it just kept growing. 
         The project doesn't see too much action these days, but as new Pokemon get added, the bot keeps up.`,

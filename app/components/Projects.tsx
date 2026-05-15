@@ -4,7 +4,8 @@ import { useRef, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
-import { Github, ExternalLink, Star, ArrowRight } from "lucide-react";
+import { ExternalLink, Star, ArrowRight } from "lucide-react";
+import { Github } from "./BrandIcons";
 import { projects, type ProjectDetail } from "../projects/data";
 
 function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {

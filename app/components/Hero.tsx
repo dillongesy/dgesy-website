@@ -4,7 +4,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
+import { Github, Linkedin } from "./BrandIcons";
 
 const ThreeOrb = dynamic(() => import("./ThreeOrb"), {
   ssr: false,

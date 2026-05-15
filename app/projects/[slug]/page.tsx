@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Github, ExternalLink, Smartphone, Play } from "lucide-react";
+import { ArrowLeft, ExternalLink, Smartphone, Play } from "lucide-react";
+import { Github } from "../../components/BrandIcons";
 import ScreenshotGallery from "../ScreenshotGallery";
 import { projects } from "../data";
 
