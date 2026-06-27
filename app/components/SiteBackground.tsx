@@ -3,10 +3,6 @@
 import { usePathname } from "next/navigation";
 import ParticleCanvas from "./ParticleCanvas";
 
-/**
- * Global page background — subtle grid + particle field.
- * Hidden on /experimental routes, which run their own distinct visuals.
- */
 export default function SiteBackground() {
   const pathname = usePathname();
   // /experimental and blog posts use the Three.js vine backdrop instead.

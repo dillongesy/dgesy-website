@@ -2,9 +2,6 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-// Markdown journal posts live in /content/blog/*.md and are read at build time
-// (this site is a static export, so everything is resolved during `next build`).
-
 export type PostMeta = {
   slug: string;
   title: string;

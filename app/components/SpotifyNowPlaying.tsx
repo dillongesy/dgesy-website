@@ -41,9 +41,6 @@ export default function SpotifyNowPlaying() {
   const [data, setData] = useState<NowPlaying | null>(null);
   const [errored, setErrored] = useState(false);
 
-  // The API only updates every POLL_MS, so the real progress jumps. We keep the
-  // last known position + the time we learned it, then tick the displayed value
-  // forward locally so the bar glides smoothly and just re-syncs on each poll.
   const syncRef = useRef({ base: 0, at: 0, duration: 0, playing: false });
   const [displayMs, setDisplayMs] = useState(0);
 

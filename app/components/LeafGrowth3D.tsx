@@ -4,20 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-/**
- * Three.js version of the wandering vine — glowing points + connecting lines
- * with real depth, in the spirit of the orb on the homepage.
- *
- * Same generative algorithm as the canvas version: a vine starts on a random
- * border, arcs through the center, and grows out to a far border, with leaves
- * spaced by arc length. Here the geometry is rendered as a point cloud and line
- * segments, leaves get a z-bulge so they read as 3D, and the whole scene gently
- * sways so you perceive the depth. Growth / wither is driven in a shader by a
- * per-vertex `aReveal` attribute against `uProgress` / `uErase` uniforms.
- *
- * Two vines grow at once on staggered timelines (two <Lane>s).
- */
-
 const GROW_MS = 4200;
 const HOLD_MS = 1300;
 const ERASE_MS = 2600;
