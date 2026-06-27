@@ -72,7 +72,7 @@ export default function ExperimentalLab({ posts }: { posts: PostMeta[] }) {
 
         {/* Journal */}
         <h2 className="mt-16 mb-5 text-xs font-mono uppercase tracking-widest text-emerald-400/80">
-          Journal
+          Blog / Journal
         </h2>
 
         {posts.length === 0 ? (

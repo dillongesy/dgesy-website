@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Music2, ExternalLink } from "lucide-react";
 
@@ -41,6 +41,12 @@ export default function SpotifyNowPlaying() {
   const [data, setData] = useState<NowPlaying | null>(null);
   const [errored, setErrored] = useState(false);
 
+  // The API only updates every POLL_MS, so the real progress jumps. We keep the
+  // last known position + the time we learned it, then tick the displayed value
+  // forward locally so the bar glides smoothly and just re-syncs on each poll.
+  const syncRef = useRef({ base: 0, at: 0, duration: 0, playing: false });
+  const [displayMs, setDisplayMs] = useState(0);
+
   useEffect(() => {
     if (!ENDPOINT) return;
     let alive = true;
@@ -50,9 +56,18 @@ export default function SpotifyNowPlaying() {
         const res = await fetch(ENDPOINT, { cache: "no-store" });
         if (!res.ok) throw new Error(String(res.status));
         const json = (await res.json()) as NowPlaying;
-        if (alive) {
-          setData(json);
-          setErrored(false);
+        if (!alive) return;
+        setData(json);
+        setErrored(false);
+        if (json.isPlaying && json.durationMs) {
+          syncRef.current = {
+            base: json.progressMs ?? 0,
+            at: Date.now(),
+            duration: json.durationMs,
+            playing: true,
+          };
+        } else {
+          syncRef.current.playing = false;
         }
       } catch {
         if (alive) setErrored(true);
@@ -67,10 +82,22 @@ export default function SpotifyNowPlaying() {
     };
   }, []);
 
+  // Local ticker that advances the displayed position between polls.
+  useEffect(() => {
+    const tick = () => {
+      const s = syncRef.current;
+      if (!s.playing || !s.duration) return;
+      setDisplayMs(Math.min(s.duration, s.base + (Date.now() - s.at)));
+    };
+    tick();
+    const id = setInterval(tick, 500);
+    return () => clearInterval(id);
+  }, []);
+
   const playing = data?.isPlaying && data.title;
   const pct =
-    data?.durationMs && data?.progressMs
-      ? Math.min(100, (data.progressMs / data.durationMs) * 100)
+    playing && data?.durationMs
+      ? Math.min(100, (displayMs / data.durationMs) * 100)
       : 0;
 
   return (
@@ -116,7 +143,7 @@ export default function SpotifyNowPlaying() {
             <p className="truncate text-xs text-slate-400">{data!.artist}</p>
             <div className="mt-2 h-1 w-full rounded-full bg-white/10 overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-[width] duration-1000 ease-linear"
+                className="h-full rounded-full bg-emerald-400 transition-[width] duration-500 ease-linear"
                 style={{ width: `${pct}%` }}
               />
             </div>
