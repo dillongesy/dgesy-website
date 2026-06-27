@@ -185,6 +185,111 @@ body.scrollbar-hover::-webkit-scrollbar-thumb {
   text-shadow: 0 0 20px rgba(129, 140, 248, 0.8), 0 0 40px rgba(129, 140, 248, 0.4);
 }
 
+/* ─── Blog / markdown prose ─────────────────────── */
+.prose-blog {
+  color: #cbd5e1;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+.prose-blog > * + * {
+  margin-top: 1.25rem;
+}
+.prose-blog h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #f1f5f9;
+}
+.prose-blog h3 {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+.prose-blog a {
+  color: #818cf8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(129, 140, 248, 0.4);
+}
+.prose-blog a:hover {
+  color: #a5b4fc;
+}
+.prose-blog strong {
+  color: #f1f5f9;
+  font-weight: 700;
+}
+.prose-blog ul,
+.prose-blog ol {
+  padding-left: 1.4rem;
+}
+.prose-blog ul {
+  list-style: disc;
+}
+.prose-blog ol {
+  list-style: decimal;
+}
+.prose-blog li::marker {
+  color: #818cf8;
+}
+.prose-blog li + li {
+  margin-top: 0.4rem;
+}
+.prose-blog blockquote {
+  border-left: 3px solid #818cf8;
+  padding-left: 1rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+.prose-blog code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.875em;
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.18);
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+  color: #c7d2fe;
+}
+.prose-blog pre {
+  background: #0b1120;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+}
+.prose-blog pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #e2e8f0;
+}
+.prose-blog hr {
+  border: none;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  margin: 2.5rem 0;
+}
+.prose-blog img {
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose-blog th,
+.prose-blog td {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.prose-blog th {
+  background: rgba(129, 140, 248, 0.08);
+  color: #e2e8f0;
+}
+
 /* ─── Section spacing ───────────────────────────── */
 .section-padding {
   padding-top: 5rem;

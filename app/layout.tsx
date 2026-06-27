@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ScrollbarHover from "./components/ScrollbarHover";
 import Nav from "./components/Nav";
-import ParticleCanvas from "./components/ParticleCanvas";
+import SiteBackground from "./components/SiteBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,18 +32,8 @@ export default function RootLayout({
       >
         <ScrollbarHover />
 
-        {/* Global page background — grid + particles */}
-        <div className="fixed inset-0 pointer-events-none -z-10" aria-hidden="true">
-          <div
-            className="absolute inset-0 opacity-[0.025]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(148,163,184,1) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,1) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-          <ParticleCanvas />
-        </div>
+        {/* Global page background — grid + particles (hidden on /experimental) */}
+        <SiteBackground />
 
         <Nav />
         {children}

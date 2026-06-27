@@ -7,10 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Eye } from "lucide-react";
 
 const links = [
-  { label: "About",      href: "/about" },
-  { label: "Experience", href: "/experience" },
-  { label: "Projects",   href: "/projects" },
-  { label: "Contact",    href: "/contact" },
+  { label: "About",        href: "/about" },
+  { label: "Experience",   href: "/experience" },
+  { label: "Projects",     href: "/projects" },
+  { label: "Contact",      href: "/contact" },
+  { label: "Experimental", href: "/experimental" },
 ];
 
 export default function Nav() {
@@ -50,21 +51,27 @@ export default function Nav() {
 
           <nav className="hidden md:flex items-center gap-1">
             {links.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive =
+                pathname === link.href || pathname.startsWith(link.href + "/");
+              const isExp = link.href === "/experimental";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                     isActive
-                      ? "text-indigo-400"
+                      ? isExp
+                        ? "text-emerald-300"
+                        : "text-indigo-400"
                       : "text-slate-400 hover:text-slate-100"
                   }`}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-lg bg-indigo-500/10"
+                      className={`absolute inset-0 rounded-lg ${
+                        isExp ? "bg-emerald-500/10" : "bg-indigo-500/10"
+                      }`}
                       transition={{ type: "spring", duration: 0.4 }}
                     />
                   )}
@@ -104,14 +111,18 @@ export default function Nav() {
             className="fixed top-20 left-4 right-4 z-40 rounded-2xl bg-[#0f172a]/95 backdrop-blur-xl border border-white/[0.08] p-4 flex flex-col gap-1 shadow-2xl"
           >
             {links.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive =
+                pathname === link.href || pathname.startsWith(link.href + "/");
+              const isExp = link.href === "/experimental";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`px-4 py-3 text-sm font-medium rounded-xl transition-colors block ${
                     isActive
-                      ? "bg-indigo-500/10 text-indigo-300"
+                      ? isExp
+                        ? "bg-emerald-500/10 text-emerald-300"
+                        : "bg-indigo-500/10 text-indigo-300"
                       : "text-slate-300 hover:bg-white/5"
                   }`}
                 >
