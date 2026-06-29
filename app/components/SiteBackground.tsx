@@ -5,11 +5,9 @@ import ParticleCanvas from "./ParticleCanvas";
 
 export default function SiteBackground() {
   const pathname = usePathname();
-  // /experimental and blog posts use the Three.js vine backdrop instead.
+  // /experimental uses the Three.js vine backdrop instead.
   const usesVine =
-    pathname === "/experimental" ||
-    pathname.startsWith("/experimental/") ||
-    pathname.startsWith("/blog/");
+    pathname === "/experimental" || pathname.startsWith("/experimental/");
 
   if (usesVine) return null;
 
