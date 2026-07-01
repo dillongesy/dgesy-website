@@ -87,7 +87,7 @@ export default function About() {
           custom={1}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-14"
         >
-          A bit <span className="text-indigo-400">about me</span>
+          A bit about me
         </motion.h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -97,15 +97,13 @@ export default function About() {
               initial="hidden"
               animate={inView ? "visible" : "hidden"}
               custom={2}
-              className="relative w-48 h-48"
+              className="relative w-full"
             >
-              <div className="absolute inset-0 rounded-2xl border-2 border-indigo-500/30 p-[2px]">
-                <div className="w-full h-full rounded-[14px] bg-[#0f172a] flex items-center justify-center">
-                  <div className="text-6xl font-black text-indigo-400 select-none">
-                    DG
-                  </div>
-                </div>
-              </div>
+              <img
+                src="/me.JPG"
+                alt="Dillon Gesy"
+                className="w-full aspect-square rounded-2xl object-cover border-3 border-cyan-500/50"
+              />
             </motion.div>
 
             <motion.div

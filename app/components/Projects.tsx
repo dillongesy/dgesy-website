@@ -164,7 +164,7 @@ export default function Projects() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
         >
-          Things I&apos;ve <span className="text-indigo-400">built</span>
+          Things I&apos;ve built
         </motion.h2>
 
         <motion.p
