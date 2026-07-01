@@ -57,7 +57,7 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
         }}
       />
 
-      <div className="h-[2px] w-full bg-indigo-500/40" />
+      <div className="h-[20px] w-full bg-indigo-500/40" />
 
       <div className="p-6 flex flex-col flex-1">
         {/* Header row */}
@@ -144,7 +144,7 @@ export default function Projects() {
   const rest = projects.filter((p) => !p.featured);
 
   return (
-    <section id="projects" ref={ref} className="section-padding px-6">
+    <section id="projects" ref={ref} className="pb-10 md:pb-16 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

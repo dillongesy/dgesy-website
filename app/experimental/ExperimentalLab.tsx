@@ -6,7 +6,7 @@ import VineBackground from "../components/VineBackground";
 
 export default function ExperimentalLab() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative flex-1 overflow-hidden">
       {/* Animated Three.js vine that wanders the screen */}
       <VineBackground />
 

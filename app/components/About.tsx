@@ -65,7 +65,7 @@ export default function About() {
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" ref={sectionRef} className="section-padding px-6">
+    <section id="about" ref={sectionRef} className="pb-10 md:pb-16 px-6">
       <div className="max-w-5xl mx-auto">
         <motion.div
           variants={fadeUp}
@@ -146,8 +146,7 @@ export default function About() {
               {[
                 "IT Network Engineer",
                 "Full Stack Software Engineer",
-                "React Native / iOS & Android",
-                "AWS Services"
+                "React Native / iOS & Android"
               ].map((tag) => (
                 <span
                   key={tag}

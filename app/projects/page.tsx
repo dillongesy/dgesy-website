@@ -6,7 +6,7 @@ export const metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className="pt-20">
+    <main className="pt-24 flex-1">
       <Projects />
     </main>
   );

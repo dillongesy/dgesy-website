@@ -47,7 +47,7 @@ export default function Experience() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="experience" ref={ref} className="section-padding px-6">
+    <section id="experience" ref={ref} className="pb-10 md:pb-16 px-6">
       <div className="max-w-4xl mx-auto">
         <motion.div
           variants={fadeUp}
@@ -88,9 +88,6 @@ export default function Experience() {
                   {/* Left: company info */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
-                        Current
-                      </span>
                     </div>
                     <h3 className="text-2xl font-bold text-slate-100 mb-1">{job.company}</h3>
                     <p className="text-indigo-400 font-medium">{job.role}</p>

@@ -28,7 +28,7 @@ const socials = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center">
+    <section className="relative flex-1 flex flex-col items-center justify-center">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.02]"
         style={{
@@ -38,7 +38,7 @@ export default function Hero() {
         }}
       />
 
-<div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-8 items-center py-28 lg:py-0 min-h-screen">
+<div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-8 items-center py-16 lg:py-0">
 
         <div>
           <motion.h1

@@ -117,7 +117,7 @@ export default function Skills() {
           custom={1}
           className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8"
         >
-          My <span className="text-indigo-400">tech stack</span>
+          My tech stack
         </motion.h2>
 
         <motion.div

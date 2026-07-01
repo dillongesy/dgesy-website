@@ -6,7 +6,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="pt-20">
+    <main className="pt-16 flex-1">
       <Contact />
     </main>
   );
