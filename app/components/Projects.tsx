@@ -14,6 +14,11 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
   const [transform, setTransform] = useState("rotateX(0deg) rotateY(0deg)");
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
 
+  // Card art comes from `cardImage` in data.ts. If the file isn't there the
+  // card just renders clean rather than showing a broken image.
+  const [artFailed, setArtFailed] = useState(false);
+  const cardArt = artFailed ? undefined : project.cardImage;
+
   const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
     if (!card) return;
@@ -48,8 +53,44 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
       onMouseLeave={onMouseLeave}
       onClick={() => router.push(`/projects/${project.slug}`)}
       style={{ transform, transition: "transform 0.15s ease-out", cursor: "pointer" }}
-      className="group relative rounded-2xl border border-white/[0.07] bg-[#0a0f1e] overflow-hidden flex flex-col"
+      className="group relative w-full rounded-2xl border border-white/[0.07] bg-[#0a0f1e] overflow-hidden flex flex-col"
     >
+      {/* Card art. Two copies of the same image share one opacity wrapper: a
+          sharp base, and a blurred copy on top masked to a soft ellipse over
+          the text column. Because the blurred copy is fully opaque inside the
+          mask it replaces the sharp one rather than stacking with it, so the
+          only visible effect is that the middle goes soft. The mask fades out
+          well before the edges, so there is no rectangle - the art stays crisp
+          in the corners and blurs only where the copy sits. */}
+      {cardArt && (
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute inset-0 opacity-40 transition-opacity duration-500 group-hover:opacity-60">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={cardArt}
+              alt=""
+              onError={() => setArtFailed(true)}
+              className="h-full w-full object-cover"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={cardArt}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover blur-[6px]"
+              style={{
+                maskImage:
+                  "radial-gradient(ellipse 70% 56% at 50% 52%, #000 40%, transparent 100%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 70% 56% at 50% 52%, #000 40%, transparent 100%)",
+              }}
+            />
+          </div>
+          {/* Scrim ramps up toward the bottom, where the copy and chips get
+              dense. Keep it light up top or the art disappears entirely. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1e]/35 via-[#0a0f1e]/60 to-[#0a0f1e]/85" />
+        </div>
+      )}
+
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
@@ -57,9 +98,9 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
         }}
       />
 
-      <div className="h-[20px] w-full bg-indigo-500/40" />
+      <div className="relative h-[20px] w-full bg-indigo-500/40" />
 
-      <div className="p-6 flex flex-col flex-1">
+      <div className="relative p-6 flex flex-col flex-1">
         {/* Header row */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -140,8 +181,11 @@ export default function Projects() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
-  const featured = projects.filter((p) => p.featured);
-  const rest = projects.filter((p) => !p.featured);
+  // Featured first, everything else after - one flat list feeding one grid.
+  const ordered = [
+    ...projects.filter((p) => p.featured),
+    ...projects.filter((p) => !p.featured),
+  ];
 
   return (
     <section id="projects" ref={ref} className="pb-10 md:pb-16 px-6">
@@ -176,27 +220,24 @@ export default function Projects() {
           Some are side projects, some are production systems. Click any card to read the full story.
         </motion.p>
 
+        {/* One centered flex row rather than two grids. A grid leaves the odd
+            card stranded in a half-width column; flex-wrap with justify-center
+            keeps every row balanced no matter how many projects there are.
+            Featured lead, so the top row is the strongest work. */}
         <motion.div
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid sm:grid-cols-2 gap-5 mb-5"
+          className="flex flex-wrap justify-center gap-5"
         >
-          {featured.map((p, i) => (
-            <TiltCard key={p.slug} project={p} i={i} />
+          {ordered.map((p, i) => (
+            <div
+              key={p.slug}
+              className="flex w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
+            >
+              <TiltCard project={p} i={i} />
+            </div>
           ))}
         </motion.div>
-
-        {rest.length > 0 && (
-          <motion.div
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="grid sm:grid-cols-2 md:grid-cols-3 gap-4"
-          >
-            {rest.map((p, i) => (
-              <TiltCard key={p.slug} project={p} i={featured.length + i} />
-            ))}
-          </motion.div>
-        )}
       </div>
     </section>
   );

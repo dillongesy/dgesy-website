@@ -126,14 +126,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           ))}
         </div>
 
-        {/* Screenshots */}
+        {/* Screenshots. The gallery renders its own heading so it can hide the
+            entire section when none of the images resolve. */}
         {project.screenshots.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-4">
-              Screenshots
-            </h2>
-            <ScreenshotGallery screenshots={project.screenshots} />
-          </div>
+          <ScreenshotGallery screenshots={project.screenshots} />
         )}
 
         {/* Retrospective */}

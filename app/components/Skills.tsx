@@ -3,10 +3,10 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-  Code2, Layers, Wrench, Cloud, Globe, type LucideIcon,
+  Code2, Layers, Wrench, Cloud, Globe, Network, Server, type LucideIcon,
 } from "lucide-react";
 
-type SkillCategory = "Language" | "Framework" | "Tool" | "Cloud";
+type SkillCategory = "Language" | "Framework" | "Tool" | "Cloud" | "Network" | "Infra";
 
 interface Skill {
   name: string;
@@ -38,16 +38,38 @@ const skills: Skill[] = [
   { name: "AWS Cognito",    category: "Cloud",     level: 4 },
   { name: "AWS RDS",        category: "Cloud",     level: 4 },
   { name: "Vercel",         category: "Cloud",     level: 5 },
+  { name: "Square API",     category: "Cloud",     level: 4 },
+  { name: "MS Graph API",   category: "Cloud",     level: 3 },
+  { name: "Cloudflare",     category: "Cloud",     level: 4 },
+  { name: "UniFi / Ubiquiti",   category: "Network", level: 5 },
+  { name: "VLAN Segmentation",  category: "Network", level: 5 },
+  { name: "Firewall Policy",    category: "Network", level: 5 },
+  { name: "Site-to-Site VPN",   category: "Network", level: 4 },
+  { name: "Point-to-Point",     category: "Network", level: 4 },
+  { name: "WAN Failover",       category: "Network", level: 4 },
+  { name: "PoE / NVR",          category: "Network", level: 4 },
+  { name: "SonicWall",          category: "Network", level: 4 },
+  { name: "Cisco",              category: "Network", level: 3 },
+  { name: "Meraki",             category: "Network", level: 3 },
+  { name: "Proxmox",        category: "Infra", level: 5 },
+  { name: "Linux",          category: "Infra", level: 4 },
+  { name: "Nginx",          category: "Infra", level: 4 },
+  { name: "PostgreSQL",     category: "Infra", level: 4 },
+  { name: "MariaDB",        category: "Infra", level: 3 },
+  { name: "CI/CD",          category: "Infra", level: 4 },
+  { name: "Docker",         category: "Infra", level: 3 },
 ];
 
 type Filter = "All" | SkillCategory;
-const FILTERS: Filter[] = ["All", "Language", "Framework", "Tool", "Cloud"];
+const FILTERS: Filter[] = ["All", "Language", "Framework", "Tool", "Cloud", "Network", "Infra"];
 
 const categoryColor: Record<SkillCategory, string> = {
   Language:  "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
   Framework: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
   Tool:      "text-purple-400 bg-purple-500/10 border-purple-500/20",
   Cloud:     "text-pink-400 bg-pink-500/10 border-pink-500/20",
+  Network:   "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+  Infra:     "text-amber-400 bg-amber-500/10 border-amber-500/20",
 };
 
 const categoryIcon: Record<SkillCategory, LucideIcon> = {
@@ -55,6 +77,8 @@ const categoryIcon: Record<SkillCategory, LucideIcon> = {
   Framework: Layers,
   Tool:      Wrench,
   Cloud:     Cloud,
+  Network:   Network,
+  Infra:     Server,
 };
 
 function CategoryIcon({ category, size = 12 }: { category: SkillCategory; size?: number }) {

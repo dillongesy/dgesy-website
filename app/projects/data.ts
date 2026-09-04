@@ -11,6 +11,12 @@ export interface ProjectDetail {
   playStore?: string;
   github?: string;
   live?: string;
+  /**
+   * Art shown behind the text on the preview card, dimmed for legibility.
+   * Drop a file at /public/projects/<slug>/card.png to fill the slot.
+   * If the file isn't there the card just renders clean.
+   */
+  cardImage?: string;
   screenshots: string[];
   retrospective: {
     overview: string;
@@ -31,6 +37,7 @@ export const projects: ProjectDetail[] = [
     featured: true,
     status: "Production",
     year: "2025 - Present",
+    cardImage: "/projects/bakeshop/card.png",
     screenshots: [
       "/projects/bakeshop/screen-home.png",
       "/projects/bakeshop/screen-menu.png",
@@ -75,6 +82,7 @@ export const projects: ProjectDetail[] = [
     featured: true,
     status: "Production",
     year: "2024 - Present",
+    cardImage: "/projects/scanbeep/card.png",
     screenshots: [
       "/projects/scanbeep/screen-main.png",
       "/projects/scanbeep/screen-customers.png",
@@ -124,6 +132,7 @@ export const projects: ProjectDetail[] = [
     featured: false,
     status: "Active",
     year: "2022 - Present",
+    cardImage: "/projects/pokedropper/card.png",
     screenshots: [
       "/projects/pokedropper/drop.png",
       "/projects/pokedropper/party.png",
@@ -153,30 +162,60 @@ export const projects: ProjectDetail[] = [
     },
   },
   {
-    slug: "mars-rover",
-    title: "Mars Rover Roomba",
-    tagline: "Autonomous embedded navigation through unknown terrain using ping and IR sensors.",
+    slug: "field-management",
+    title: "Field Management App",
+    tagline: "The platform our MSP runs on - an internal portal and a field app, on hardware I built.",
     description:
-      "Programmed a Roomba to navigate autonomously through unknown terrain using ping and IR sensors. C++ on embedded hardware.",
-    tech: ["C++", "Embedded Systems", "Ping Sensors", "IR Sensors"],
-    featured: false,
-    status: "Academic",
-    year: "2023",
-    screenshots: [],
+      "Two apps that run our IT MSP end to end: an encrypted internal portal for billing, inventory, credentials, and analytics, plus a mobile web app the field techs use on site. Self-hosted on Proxmox hardware I built.",
+    tech: ["Node.js", "PostgreSQL", "Nginx", "Proxmox", "CI/CD", "systemd", "UFW", "Encryption at Rest"],
+    featured: true,
+    status: "Production",
+    year: "2025 - Present",
+    cardImage: "/projects/field-management/card.png",
+    screenshots: [
+      "/projects/field-management/dashboard.png",
+      "/projects/field-management/customer.png",
+      "/projects/field-management/portal-workorders.png",
+      "/projects/field-management/portal-inventory.png",
+      "/projects/field-management/backlog.png",
+      "/projects/field-management/billingqueue.png",
+      "/projects/field-management/analytics.png",
+      "/projects/field-management/field-workorders.jpg",
+      "/projects/field-management/field-inventory.jpg",
+    ],
     retrospective: {
       overview:
-        `Embedded systems course final project: write C++ firmware for a Roomba to navigate an obstacle course 
-        it had never seen, using only ping and infrared sensors for spatial awareness. No maps, no GPS, just 
-        sensor readings and logic.`,
+        `This is the software our IT MSP actually runs on, and it is two applications talking to each other.
+        The internal portal is where the company lives - billing, inventory, backlog, analytics, job progress,
+        client credentials, company data, internal guides, and estimates. Everything in it is encrypted at the
+        database layer by default, because a good portion of it is client credentials and company records that
+        have no business sitting in plaintext.
+        The second app is web-facing and built for a phone browser, because that is what our field guys
+        actually have on them. Out on a job they take pictures, jot down work orders, log their hours, and
+        record what inventory they burned - and that last part decrements stock directly rather than waiting
+        for someone to reconcile it later. When they get back, the portal imports the work orders they created
+        in the field, and they log in locally to finalize and send the real thing.`,
       challenges:
-        `The sensors create some noisy readings. A reading of 12cm could mean an actual obstacle or just interference. 
-        Building a decision algorithm that worked reliably despite noisy input required averaging, filtering, 
-        and a lot of physical testing.`,
+        `I own the entire stack down to the metal. I built the Proxmox hardware and stood up every tier
+        myself - reverse proxy manager, Linux servers, database VMs, web server VMs - so there is no managed
+        platform absorbing my mistakes. That meant the deployment pipeline had to be trustworthy before anyone
+        depended on it: webhook-driven CI/CD with GitHub deploy keys, auto-deploying on every push to main
+        with zero downtime, no SSH and no maintenance window.
+        Letting two separate applications talk without flattening the network between them was its own
+        problem. The answer was an explicit allow-list bridging the subsystems rather than opening them up to
+        each other, with systemd handling supervision and UFW holding the line at each host.`,
       learnings:
-        `This project was a big experience for learning what "crunch-time" actually means. 
-        Working as a team, we spent countless nights going in to lab and working out the edge cases, filtering, and 
-        making it work. Also, this project taught me a lot about optimization trade-offs. Scanning every couple of cm isn't 
-        viable, so combining readings from previous scans helps to keep the roomba spend more time moving and less time scanning.`,
+        `Encrypting by default changes how you design. You stop treating encryption as a feature you bolt on
+        for the sensitive tables and start treating plaintext as the thing that needs justifying.
+        Building for field techs taught me the same lesson the barcode scanner did, in a different accent:
+        the app has to work one-handed, on a phone, on bad rural signal, while someone is standing in a server
+        closet. Anything clever I wanted to add lost to anything obvious.`,
+      outcome:
+        `It is live and running on real data. If I am honest about what it did - it turned the company inside
+        out. Before it existed, all of this ran on photographs, memory, and Excel sheets parked on a NAS.
+        Now the work order that starts on a phone in the field is the same record that gets billed.
+        And because I own it end to end, it changes constantly - I can ship a fix the same afternoon someone
+        asks for it.`,
     },
   },
   {
@@ -185,10 +224,11 @@ export const projects: ProjectDetail[] = [
     tagline: "Full-scale home lab setup built by me.",
     description:
       "A development playground and server hosting through various hardware, software, operating systems, and more.",
-    tech: ["Ubiquiti", "Cisco", "Linux", "Windows", "Java", "JavaScript", "Node", "Proxmox", "Docker", "Cloudflare"],
+    tech: ["Ubiquiti", "Linux", "Windows", "Java", "JavaScript", "Node", "Proxmox", "Docker", "Cloudflare"],
     featured: false,
     status: "Active",
     year: "2026 - Present",
+    cardImage: "/projects/homelab/card.png",
     screenshots: [
       "/projects/homelab/proxmox.png",
       "/projects/homelab/unifi.png",

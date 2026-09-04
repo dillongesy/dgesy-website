@@ -18,6 +18,14 @@ type NowPlaying = {
   durationMs?: number;
 };
 
+/** ms -> m:ss, the way Spotify shows it. Clamps negatives so a slow poll can't render "-0:01". */
+function formatTime(ms: number) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const minutes = Math.floor(total / 60);
+  const seconds = total % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
 function EqualizerBars() {
   return (
     <div className="flex items-end gap-[3px] h-4" aria-hidden="true">
@@ -143,6 +151,12 @@ export default function SpotifyNowPlaying() {
                 className="h-full rounded-full bg-emerald-400 transition-[width] duration-500 ease-linear"
                 style={{ width: `${pct}%` }}
               />
+            </div>
+            {/* Elapsed / total. Ticks locally between polls off the same clock
+                that drives the bar, so the number never disagrees with it. */}
+            <div className="mt-1 flex items-center justify-between font-mono text-[10px] tabular-nums text-slate-500">
+              <span className="text-emerald-400/70">{formatTime(displayMs)}</span>
+              <span>{formatTime(data!.durationMs ?? 0)}</span>
             </div>
           </div>
           <ExternalLink

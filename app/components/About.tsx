@@ -2,13 +2,15 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, GraduationCap, BookOpen } from "lucide-react";
+import { MapPin, GraduationCap, BookOpen, Network } from "lucide-react";
 
 const stats = [
-  { label: "Years Coding",  value: 5,  suffix: "+" },
-  { label: "Apps Created",  value: 6,  suffix: "+" },
-  { label: "Technologies",  value: 20, suffix: "+" },
-  { label: "Active Users",  value: 50, suffix: "+" },
+  { label: "Years Coding",   value: 6,    suffix: "+" },
+  { label: "Apps Created",   value: 10,   suffix: "+" },
+  { label: "Active Users",   value: 1000, suffix: "+" },
+  { label: "Technologies",   value: 40,   suffix: "+" },
+  { label: "Clients Served", value: 100,  suffix: "+" },
+  { label: "Networks Built", value: 10,   suffix: "+" },
 ];
 
 const education = {
@@ -45,7 +47,7 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 
   return (
     <span ref={ref}>
-      {count}
+      {count.toLocaleString()}
       {suffix}
     </span>
   );
@@ -125,36 +127,16 @@ export default function About() {
                 and more.
               </p>
               <p>
-                Outside of software engineering, I'm a full-time IT Engineer setting up enterprise networks with 
-                VLANs, TLANs, and standard cyber security practices. I have experience with Ubiquiti, SonicWall, and 
-                Meraki products. The types of offices you may catch me in (but not limited to) are dentistries, 
-                insurance offices, agriculture offices, and various government agencies.
+                The other half of my job is the network underneath all of it. I build enterprise sites from
+                scratch - VLAN segmentation, firewall policy, site-to-site VPN, point-to-point links to
+                outbuildings, and camera systems. I work with Ubiquiti,
+                SonicWall, Meraki, and whatever else you can name.
               </p>
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <MapPin size={14} className="text-indigo-400" />
-                Iowa
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              custom={4}
-              className="flex flex-wrap gap-2"
-            >
-              {[
-                "IT Network Engineer",
-                "Full Stack Software Engineer",
-                "React Native / iOS & Android"
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium border border-white/[0.07] bg-white/[0.03] text-slate-400"
-                >
-                  {tag}
-                </span>
-              ))}
+              <p>
+                The offices you might catch me in are dentistries, insurance and agriculture offices, and
+                government agencies. Being on both sides of the wall is the part I like most. I can build an app in the
+                morning and the network it runs on in the afternoon.
+              </p>
             </motion.div>
           </div>
 
@@ -179,7 +161,7 @@ export default function About() {
               variants={fadeUp}
               initial="hidden"
               animate={inView ? "visible" : "hidden"}
-              custom={7}
+              custom={10}
               className="col-span-2 rounded-2xl p-5 border border-indigo-500/15 bg-indigo-500/[0.04]"
             >
               <div className="flex items-center gap-2 mb-3">
@@ -202,6 +184,17 @@ export default function About() {
                   <p className="text-emerald-400 font-bold text-sm mt-1">GPA {education.gpa}</p>
                 </div>
               </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+              custom={11}
+              className="col-span-2 flex items-center gap-2 text-sm text-slate-500"
+            >
+              <MapPin size={14} className="text-indigo-400" />
+              Iowa
             </motion.div>
           </div>
         </div>
