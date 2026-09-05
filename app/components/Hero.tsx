@@ -7,9 +7,9 @@ import { TypeAnimation } from "react-type-animation";
 import { Mail } from "lucide-react";
 import { Github, Linkedin } from "./BrandIcons";
 
-const ThreeOrb = dynamic(() => import("./ThreeOrb"), {
+const MorphOrb = dynamic(() => import("./MorphOrb"), {
   ssr: false,
-  loading: () => <div style={{ width: "640px", height: "640px" }} />,
+  loading: () => <div className="h-full w-full" />,
 });
 
 const taglines = [
@@ -38,8 +38,7 @@ export default function Hero() {
         }}
       />
 
-<div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-8 items-center py-16 lg:py-0">
-
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center py-16 lg:py-0">
         <div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -117,14 +116,18 @@ export default function Hero() {
           </motion.div>
         </div>
 
+        {/* Square, viewport-relative box so the orb stays optically centred in its
+            column on every screen — it used to be a fixed 640px canvas inside a
+            480px track, which pushed it off-centre on anything under ~1700px. */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.3 }}
-          className="hidden lg:block"
-          style={{ width: "640px", height: "640px" }}
+          className="w-full flex items-center justify-center"
         >
-          <ThreeOrb />
+          <div className="relative w-full aspect-square max-w-[min(340px,80vw)] sm:max-w-[min(420px,60vh)] lg:max-w-[min(520px,62vh)] xl:max-w-[min(600px,68vh)]">
+            <MorphOrb />
+          </div>
         </motion.div>
       </div>
     </section>

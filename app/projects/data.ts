@@ -164,13 +164,13 @@ export const projects: ProjectDetail[] = [
   {
     slug: "field-management",
     title: "Field Management App",
-    tagline: "The platform our MSP runs on - an internal portal and a field app, on hardware I built.",
+    tagline: "The platform our MSP runs on - an internal portal and a field app, on hardware I deployed.",
     description:
-      "Two apps that run our IT MSP end to end: an encrypted internal portal for billing, inventory, credentials, and analytics, plus a mobile web app the field techs use on site. Self-hosted on Proxmox hardware I built.",
+      "Two apps that run our IT MSP end to end. An encrypted internal portal for billing, inventory, credentials, and analytics, plus a mobile web app the field techs use on site. Self-hosted on Proxmox hardware I deployed.",
     tech: ["Node.js", "PostgreSQL", "Nginx", "Proxmox", "CI/CD", "systemd", "UFW", "Encryption at Rest"],
     featured: true,
     status: "Production",
-    year: "2025 - Present",
+    year: "2026 - Present",
     cardImage: "/projects/field-management/card.png",
     screenshots: [
       "/projects/field-management/dashboard.png",
@@ -185,36 +185,36 @@ export const projects: ProjectDetail[] = [
     ],
     retrospective: {
       overview:
-        `This is the software our IT MSP actually runs on, and it is two applications talking to each other.
-        The internal portal is where the company lives - billing, inventory, backlog, analytics, job progress,
-        client credentials, company data, internal guides, and estimates. Everything in it is encrypted at the
-        database layer by default, because a good portion of it is client credentials and company records that
-        have no business sitting in plaintext.
-        The second app is web-facing and built for a phone browser, because that is what our field guys
-        actually have on them. Out on a job they take pictures, jot down work orders, log their hours, and
-        record what inventory they burned - and that last part decrements stock directly rather than waiting
-        for someone to reconcile it later. When they get back, the portal imports the work orders they created
+        `This is the software our IT MSP runs on, and it's really two applications running & talking to each other.
+        The internal, local only portal is where the company lives - billing, inventory, backlog, analytics, job progress,
+        client information, company data, internal guides, and estimates. Everything is encrypted by default, because a good 
+        portion of it is sensitive information that have no business sitting as plaintext. 
+        The second app is web-facing and built for a phone browser, because that is what our field guys 
+        actually have on them. Out on a job they take pictures, jot down work orders, log their hours, and 
+        record what inventory they used up. That last part decrements stock directly rather than waiting 
+        for someone to reconcile it later. When they get back, the portal imports the work orders they created 
         in the field, and they log in locally to finalize and send the real thing.`,
       challenges:
-        `I own the entire stack down to the metal. I built the Proxmox hardware and stood up every tier
-        myself - reverse proxy manager, Linux servers, database VMs, web server VMs - so there is no managed
-        platform absorbing my mistakes. That meant the deployment pipeline had to be trustworthy before anyone
-        depended on it: webhook-driven CI/CD with GitHub deploy keys, auto-deploying on every push to main
-        with zero downtime, no SSH and no maintenance window.
-        Letting two separate applications talk without flattening the network between them was its own
-        problem. The answer was an explicit allow-list bridging the subsystems rather than opening them up to
+        `I own the entire stack down to the metal. I built the Proxmox hardware and architected everything 
+        myself. Reverse proxy manager, Linux servers, database VMs, web server VMs, and so much more. There is no managed 
+        platform absorbing my mistakes. I also implemented a deployment pipeline for these applications. 
+        Webhook-driven CI/CD with GitHub deploy keys, auto-deploying on every push to main 
+        with zero downtime, no SSH and no maintenance window, and all set up to be as secure as it can be. 
+        Letting two separate applications talk without flattening the network between them was its own 
+        problem. The answer was an explicit allow-list bridging the subsystems rather than opening them up to 
         each other, with systemd handling supervision and UFW holding the line at each host.`,
       learnings:
-        `Encrypting by default changes how you design. You stop treating encryption as a feature you bolt on
-        for the sensitive tables and start treating plaintext as the thing that needs justifying.
-        Building for field techs taught me the same lesson the barcode scanner did, in a different accent:
-        the app has to work one-handed, on a phone, on bad rural signal, while someone is standing in a server
-        closet. Anything clever I wanted to add lost to anything obvious.`,
+        `Although daunting to build at first, this was 100% necessary and we're at the point where it would be hard to imagine 
+        life without the apps. Although I was pretty familiar with how we operate, there were so many edge cases and constant quality of 
+        life adjustments I had to make, to really make this idea stick. The nice thing about controlling every aspect about the applications, 
+        including the hosting platform, the code, and deployment, is that you can make changes on the fly as you go. Often times changes happen 
+        same-day or at minimum same-week. The main take away from this project is that people love progressive elaboration and fast changes, as well 
+        as quality software that genuinely helps them in day-to-day tasks.`,
       outcome:
-        `It is live and running on real data. If I am honest about what it did - it turned the company inside
-        out. Before it existed, all of this ran on photographs, memory, and Excel sheets parked on a NAS.
-        Now the work order that starts on a phone in the field is the same record that gets billed.
-        And because I own it end to end, it changes constantly - I can ship a fix the same afternoon someone
+        `It is live and running on real data. It made tedious processes turn into something effortless so we can focus on the actual work that matters. 
+        Before it existed, all of this ran on photographs, memory, and Excel sheets parked on a NAS. 
+        Now the work order that starts on a phone in the field is the same record that gets billed. 
+        And because I own it end to end, it changes constantly - I can ship a fix the same afternoon someone 
         asks for it.`,
     },
   },
