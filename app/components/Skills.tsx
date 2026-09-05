@@ -114,7 +114,7 @@ const fadeUp = {
 export default function Skills() {
   const [active, setActive] = useState<Filter>("All");
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
 
   const filtered = active === "All" ? skills : skills.filter((s) => s.category === active);
 

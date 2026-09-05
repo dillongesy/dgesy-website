@@ -179,7 +179,7 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
 
 export default function Projects() {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
 
   // Featured first, everything else after - one flat list feeding one grid.
   const ordered = [

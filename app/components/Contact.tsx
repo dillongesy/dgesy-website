@@ -37,7 +37,7 @@ const fadeUp = {
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
   const [copied, setCopied] = useState(false);
 
   const copyEmail = async () => {

@@ -90,7 +90,7 @@ const fadeUp = {
 
 export default function Experience() {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <section id="experience" ref={ref} className="pb-10 md:pb-16 px-6">
@@ -163,8 +163,10 @@ export default function Experience() {
                       <p className="text-slate-400 font-medium">{job.company}</p>
                     </div>
 
-                    {/* Right: logo + date/location */}
-                    <div className="flex flex-col items-end gap-3 flex-shrink-0">
+                    {/* Logo + date/location. On a narrow screen this block wraps
+                        onto its own line, so it sits left-aligned in a row under
+                        the role rather than floating off to the right. */}
+                    <div className="flex w-full flex-row items-center gap-4 flex-shrink-0 sm:w-auto sm:flex-col sm:items-end sm:gap-3">
                       <div className="w-16 h-16 rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden flex items-center justify-center">
                         {job.logo ? (
                           <Image
@@ -181,7 +183,7 @@ export default function Experience() {
                         )}
                       </div>
 
-                      <div className="flex flex-col items-end gap-1.5 text-sm text-slate-500">
+                      <div className="flex flex-col items-start gap-1.5 text-sm text-slate-500 sm:items-end">
                         <span className="flex items-center gap-1.5">
                           <Calendar size={13} />
                           {job.period}

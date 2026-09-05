@@ -25,7 +25,7 @@ const education = {
 function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
 
   useEffect(() => {
     if (!inView) return;
@@ -64,7 +64,7 @@ const fadeUp = {
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const inView = useInView(sectionRef, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <section id="about" ref={sectionRef} className="pb-10 md:pb-16 px-6">

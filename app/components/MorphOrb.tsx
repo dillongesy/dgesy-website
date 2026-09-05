@@ -421,8 +421,8 @@ export default function MorphOrb() {
           Pulling the camera back by the same factor keeps the orb the same
           on-screen size. */}
       <div
-        className="pointer-events-none absolute [&_canvas]:!h-full [&_canvas]:!w-full"
-        style={{ inset: `${((1 - CANVAS_SCALE) / 2) * 100}%` }}
+        className="pointer-events-none absolute left-1/2 top-1/2 max-w-[100vw] -translate-x-1/2 -translate-y-1/2 lg:max-w-none [&_canvas]:!h-full [&_canvas]:!w-full"
+        style={{ width: `${CANVAS_SCALE * 100}%`, height: `${CANVAS_SCALE * 100}%` }}
       >
         <Canvas
           camera={{ position: [0, 0, CAMERA_Z], fov: 45 }}
@@ -445,7 +445,6 @@ export default function MorphOrb() {
         onPointerMove={onPointerMove}
         onPointerEnter={() => (ptr.current.over = true)}
         onPointerLeave={() => (ptr.current.over = false)}
-        title="Click it"
       />
 
     </div>
