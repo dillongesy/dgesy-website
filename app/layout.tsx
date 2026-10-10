@@ -37,8 +37,14 @@ export default function RootLayout({
         <SiteBackground />
 
         <Nav />
-        {children}
-        <Footer />
+        {/* overflow-clip: the hero orb's canvas is CANVAS_SCALE x its box so
+            explosions aren't cut off, but it hangs past the footer and made the
+            home page scroll into empty space. Clip (not hidden) doesn't create a
+            scroll container, so long pages still scroll and the fixed nav is untouched. */}
+        <div className="flex-1 flex flex-col overflow-clip">
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

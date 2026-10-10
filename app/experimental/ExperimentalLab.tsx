@@ -1,8 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import SpotifyNowPlaying from "../components/SpotifyNowPlaying";
 import VineBackground from "../components/VineBackground";
+
+// Client-only: it reads saved settings from localStorage on first render.
+const GuitarTuner = dynamic(() => import("../components/tuner/GuitarTuner"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[46rem] rounded-2xl border border-emerald-400/15 bg-[#04140f]/70 backdrop-blur-xl" />
+  ),
+});
 
 export default function ExperimentalLab() {
   return (
@@ -56,6 +65,16 @@ export default function ExperimentalLab() {
           className="mt-10"
         >
           <SpotifyNowPlaying />
+        </motion.div>
+
+        {/* Guitar tuner + chord trainer */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-6"
+        >
+          <GuitarTuner />
         </motion.div>
       </div>
     </main>

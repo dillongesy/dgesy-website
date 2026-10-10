@@ -73,6 +73,54 @@ export const projects: ProjectDetail[] = [
     },
   },
   {
+    slug: "wafersgolf",
+    title: "Wafer's Golf & Social",
+    tagline: "Online booking and self-serve door codes for an indoor golf simulator.",
+    description:
+      `Booking, payments, and self-serve door access for a two-bay indoor golf simulator in Manilla, Iowa. Customers book online, pay by card, 
+      and get a door code that only works during their booking. Also has memberships, gift cards, and an owner's admin calendar.`,
+    tech: ["React", "TypeScript", "Fastify", "MariaDB", "Stripe", "Twilio", "React Native", "Nginx", "GitHub Actions"],
+    featured: true,
+    status: "Production",
+    year: "2026 - Present",
+    cardImage: "/projects/wafersgolf/card.png",
+    screenshots: [
+      "/projects/wafersgolf/screen-home.png",
+      "/projects/wafersgolf/screen-book.png",
+      "/projects/wafersgolf/screen-membership.png",
+      "/projects/wafersgolf/home.png",
+      "/projects/wafersgolf/book.png",
+      "/projects/wafersgolf/membership.png",
+      "/projects/wafersgolf/how-it-works.png",
+      "/projects/wafersgolf/reservations.png",
+    ],
+    retrospective: {
+      overview:
+        `Wafer's is an indoor golf simulator with two bays and nobody working a front desk. The business runs autonomously on the software.
+        A customer picks a start time, pays by card through Stripe, and gets a six-digit code that opens the door for their booking
+        window. Members get a door code of their own for the duration of their membership and can book bay two for free. On top of that there are gift cards,
+        receipts, and whole-venue reservations. Admins get an admin calendar where they can close the venue, cancel and refund a booking, book somebody 
+        in on a custom price, or view anything they want. If that's not enough, there's also a mobile app on the app store to do everything there.`,
+      challenges:
+        `The door is by far the hardest part. Codes are pushed to an access control panel. Code that doesn't work
+        means someone is standing outside in the cold. So the card is only authorized at checkout and captured once the code is actually on the panel.
+        If the door code never reaches the lock, the hold is released and nobody is charged. Everything else is about making purchases and the 
+        door codes agree. A refund in the Stripe dashboard revokes the code, a payment that lands after its hold expired gets refunded
+        automatically, and backing out of checkout frees the time slot immediately. This is the first time I've worked with Stripe, and it makes taking payments 
+        through code so easy.`,
+      learnings:
+        `It's a giant responsibility to make sure everything on the user interface is done right. Real people are super eager to get their golfing in, 
+        so shipping without rigorous testing is very important. 
+        Having a process for shipping new code was absolutely non-negotiable in this project. Testing against an actual database and Stripe's test mode was crucial 
+        in determining what worked and didn't work before customers ever could. 
+        I also learned a lot about deploying safely - schema changes go in as proper migrations,
+        CI has to pass before anything deploys through GitHub Actions, and a failed health check rolls straight back to the previous release.`,
+      outcome:
+        `The venue is open and taking bookings. Customers book, pay, and let themselves in without someone lifting a finger,
+        and the owners run everything else from the admin page. Book a bay now at wafersgolfsocial.com!`,
+    },
+  },
+  {
     slug: "scanbeep",
     title: "ScanBeep - Inventory Warehouse",
     tagline: "End-to-end inventory management with custom barcodes, Android scanning, and a web dashboard.",

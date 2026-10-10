@@ -14,7 +14,7 @@
     "@types/three": "^0.185.4",
     "framer-motion": "^12.43.0",
     "lucide-react": "^1.33.0",
-    "next": "16.3.1",
+    "next": "16.4.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-type-animation": "^3.2.0",
@@ -29,12 +29,13 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "eslint": "^10.8.1",
-    "eslint-config-next": "16.3.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
     "tailwindcss": "^4",
-    "typescript": "^6"
+    "typescript": "^6",
+    "typescript-eslint": "^8.71.1"
   },
   "allowScripts": {
-    "sharp@0.35.3": true,
-    "unrs-resolver@1.12.2": true
+    "sharp@0.35.5": true
   }
 }

@@ -32,7 +32,6 @@ export default function ScreenshotGallery({ screenshots }: { screenshots: string
             key={src}
             className="flex-shrink-0 snap-start rounded-xl border border-white/[0.07] bg-white/[0.02] overflow-hidden"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={src}
               alt={`Screenshot ${i + 1}`}

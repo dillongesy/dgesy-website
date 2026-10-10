@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, GraduationCap, BookOpen, Network } from "lucide-react";
+import { MapPin, GraduationCap, BookOpen } from "lucide-react";
 
 const stats = [
   { label: "Years Coding",   value: 6,    suffix: "+" },

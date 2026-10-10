@@ -127,7 +127,6 @@ export default function SpotifyNowPlaying() {
           className="group flex items-center gap-3"
         >
           {data!.albumImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={data!.albumImageUrl}
               alt={data!.album || ""}

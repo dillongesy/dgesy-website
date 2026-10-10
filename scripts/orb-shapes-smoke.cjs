@@ -26,7 +26,7 @@ const outCol = new Float32Array(N * 3);
 for (const s of SHAPES) {
   const b = s.build();
   process.stdout.write(s.id.padEnd(11));
-  const p = check("pos", b.pos, N * 3);
+  check("pos", b.pos, N * 3);
   check("col", b.col, N * 3);
   // extent from origin
   let rmax = 0;

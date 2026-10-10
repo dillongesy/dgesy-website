@@ -65,14 +65,12 @@ function TiltCard({ project, i }: { project: ProjectDetail; i: number }) {
       {cardArt && (
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute inset-0 opacity-40 transition-opacity duration-500 group-hover:opacity-60">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={cardArt}
               alt=""
               onError={() => setArtFailed(true)}
               className="h-full w-full object-cover"
             />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={cardArt}
               alt=""
