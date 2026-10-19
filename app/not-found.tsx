@@ -18,7 +18,7 @@ export default function NotFound() {
     <main className="flex-1 flex items-center justify-center px-6 pt-28 pb-20">
       <div className="max-w-xl text-center">
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-indigo-400 mb-6">
-          Error 404 · page not found
+          Error 404 - page not found
         </p>
 
         <h1

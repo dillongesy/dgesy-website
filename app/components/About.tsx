@@ -102,7 +102,7 @@ export default function About() {
               className="relative w-full"
             >
               <img
-                src="/me.JPG"
+                src="/dillon.jpg"
                 alt="Dillon Gesy"
                 className="w-full aspect-square rounded-2xl object-cover border-3 border-cyan-500/50"
               />
