@@ -302,3 +302,15 @@ body.scrollbar-hover::-webkit-scrollbar-thumb {
     padding-bottom: 4rem;
   }
 }
+
+/* ─── Reduced motion ────────────────────────────── */
+/* Visitors who ask their OS for less motion get the same page, minus the
+   looping decorative animation. (Canvas/WebGL effects handle this in JS.) */
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text::before,
+  .glitch-text::after,
+  .animate-float,
+  .shimmer {
+    animation: none;
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 
 interface Particle {
   x: number;
@@ -20,6 +21,8 @@ const CONNECTION_DIST = 130;
 
 export default function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Reduced motion: draw the field once as a still backdrop instead of animating it.
+  const still = useReducedMotion() ?? false;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,7 +30,7 @@ export default function ParticleCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animId: number;
+    let animId = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -52,31 +55,32 @@ export default function ParticleCanvas() {
       phaseSpeed: (Math.random() - 0.5) * 0.008,
     }));
 
-    const onResize = () => resize();
-    window.addEventListener("resize", onResize);
+    const move = (p: Particle) => {
+      p.phase += p.phaseSpeed;
+      p.vx += Math.cos(p.phase) * 0.008;
+      p.vy += Math.sin(p.phase) * 0.008;
 
-    const animate = () => {
+      p.vx *= 0.99;
+      p.vy *= 0.99;
+      const spd = Math.hypot(p.vx, p.vy);
+      if (spd > 2.0) {
+        p.vx = (p.vx / spd) * 2.0;
+        p.vy = (p.vy / spd) * 2.0;
+      }
+
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+    };
+
+    const draw = (animate: boolean) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (const p of particles) {
-        p.phase += p.phaseSpeed;
-        p.vx += Math.cos(p.phase) * 0.008;
-        p.vy += Math.sin(p.phase) * 0.008;
-
-        p.vx *= 0.99;
-        p.vy *= 0.99;
-        const spd = Math.hypot(p.vx, p.vy);
-        if (spd > 2.0) {
-          p.vx = (p.vx / spd) * 2.0;
-          p.vy = (p.vy / spd) * 2.0;
-        }
-
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+        if (animate) move(p);
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -105,16 +109,27 @@ export default function ParticleCanvas() {
         }
       }
 
-      animId = requestAnimationFrame(animate);
     };
 
-    animate();
+    const loop = () => {
+      draw(true);
+      animId = requestAnimationFrame(loop);
+    };
+
+    const onResize = () => {
+      resize();
+      if (still) draw(false);
+    };
+    window.addEventListener("resize", onResize);
+
+    if (still) draw(false);
+    else loop();
 
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [still]);
 
   return (
     <canvas

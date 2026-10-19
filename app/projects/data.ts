@@ -127,7 +127,7 @@ export const projects: ProjectDetail[] = [
     description:
       "Inventory system built from scratch - custom barcodes, Android scanning app, SQL database, and a web dashboard for reporting. Used internally and by clients.",
     tech: ["Java", "Android Studio", "SQL", "React", "Next.js"],
-    featured: true,
+    featured: false,
     status: "Production",
     year: "2024 - Present",
     cardImage: "/projects/scanbeep/card.png",
@@ -271,7 +271,7 @@ export const projects: ProjectDetail[] = [
     title: "Home Lab",
     tagline: "Full-scale home lab setup built by me.",
     description:
-      "A development playground and server hosting through various hardware, software, operating systems, and more.",
+      "A development playground and server hosting through various hardware, software, operating systems, and more. It's how this site is hosted!",
     tech: ["Ubiquiti", "Linux", "Windows", "Java", "JavaScript", "Node", "Proxmox", "Docker", "Cloudflare"],
     featured: false,
     status: "Active",

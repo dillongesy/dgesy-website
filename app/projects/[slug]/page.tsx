@@ -4,6 +4,7 @@ import { ArrowLeft, ExternalLink, Smartphone, Play } from "lucide-react";
 import { Github } from "../../components/BrandIcons";
 import ScreenshotGallery from "../ScreenshotGallery";
 import { projects } from "../data";
+import { pageMetadata } from "../../lib/site";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
-  return { title: `${project.title} - Dillon Gesy` };
+  return pageMetadata(`${project.title} - Dillon Gesy`, project.tagline, `/projects/${project.slug}/`);
 }
 
 const statusStyle: Record<string, string> = {

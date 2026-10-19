@@ -16,7 +16,7 @@ const taglines = [
   "IT Network Engineer",
   "Full Stack Engineer",
   "Mobile App Developer",
-  "Cloud Architect",
+  "Network Engineer",
   "Embedded System Solver",
 ];
 

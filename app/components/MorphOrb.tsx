@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { useReducedMotion } from "framer-motion";
 import * as THREE from "three";
 
 import {
@@ -20,6 +21,15 @@ import {
 } from "./orbShapes";
 
 const _c = new THREE.Color(); // local scratch for building comet trail colours
+
+// Our own running clock instead of state.clock.elapsedTime: R3F zeroes that
+// clock whenever the frameloop is switched, so pausing the orb offscreen would
+// make every time-driven motion snap back to its start on resume. This one only
+// advances while frames are actually drawn, so a pause just picks up where it left off.
+function useOrbTime() {
+  const t = useRef(0);
+  return (rawDelta: number) => (t.current += Math.min(rawDelta, 0.25));
+}
 
 // ── comets ──────────────────────────────────────────────────────────────────
 const COMETS = 18;
@@ -65,9 +75,10 @@ function CometSwarm() {
   }, []);
 
   const v = useMemo(() => new THREE.Vector3(), []);
+  const tick = useOrbTime();
 
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
+  useFrame((_, rawDelta) => {
+    const t = tick(rawDelta);
     const { orbits, tPos, hPos } = data;
     for (let ci = 0; ci < COMETS; ci++) {
       const o = orbits[ci];
@@ -202,10 +213,11 @@ function MorphBody({
   const accent = useMemo(() => new THREE.Color(), []);
   const repel = useMemo(() => new THREE.Vector3(), []);
   const invQ = useMemo(() => new THREE.Quaternion(), []);
+  const tick = useOrbTime();
 
-  useFrame((state, rawDelta) => {
+  useFrame((_, rawDelta) => {
     const dt = Math.min(rawDelta, 0.05);
-    const t = state.clock.elapsedTime;
+    const t = tick(rawDelta);
     const s = st.current;
     const { posAttr, colAttr, lineGeo, hash, burst, from, fromCol, target, targetCol, push } =
       buffers;
@@ -396,6 +408,34 @@ export default function MorphOrb() {
   const mode = useRef<MorphMode>("vortex");
   const autoCount = useRef(0);
 
+  // Reduced motion: draw one still frame of the first shape and stop.
+  const reduceMotion = useReducedMotion() ?? false;
+
+  // Stop rendering entirely while the orb is scrolled out of view or the tab is
+  // in the background, so it isn't spinning a laptop's fans for nothing. The
+  // observer watches the oversized canvas box, not the layout square, so the
+  // orb only pauses once even a flying explosion would be out of sight.
+  const canvasBoxRef = useRef<HTMLDivElement>(null);
+  const [onScreen, setOnScreen] = useState(true);
+  useEffect(() => {
+    const el = canvasBoxRef.current;
+    if (!el) return;
+    let intersecting = true;
+    const update = () => setOnScreen(intersecting && !document.hidden);
+    const io = new IntersectionObserver(([entry]) => {
+      intersecting = entry.isIntersecting;
+      update();
+    });
+    io.observe(el);
+    document.addEventListener("visibilitychange", update);
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", update);
+    };
+  }, []);
+
+  const frameloop = reduceMotion ? "demand" : onScreen ? "always" : "never";
+
   // pointer is tracked against the layout square, not the oversized canvas
   const onPointerMove = (e: React.PointerEvent) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -421,6 +461,7 @@ export default function MorphOrb() {
           Pulling the camera back by the same factor keeps the orb the same
           on-screen size. */}
       <div
+        ref={canvasBoxRef}
         className="pointer-events-none absolute left-1/2 top-1/2 max-w-[100vw] -translate-x-1/2 -translate-y-1/2 lg:max-w-none [&_canvas]:!h-full [&_canvas]:!w-full"
         style={{ width: `${CANVAS_SCALE * 100}%`, height: `${CANVAS_SCALE * 100}%` }}
       >
@@ -433,19 +474,22 @@ export default function MorphOrb() {
           // that scales a parent would bake a wrong canvas size in on mount
           resize={{ scroll: false, offsetSize: true }}
           dpr={[1, 1.5]}
+          frameloop={frameloop}
         >
           <MorphBody index={index} mode={mode} ptr={ptr} onIdle={onIdle} />
           <CometSwarm />
         </Canvas>
       </div>
 
-      <div
-        className="absolute inset-0 cursor-pointer"
-        onClick={() => step(1, "shatter")}
-        onPointerMove={onPointerMove}
-        onPointerEnter={() => (ptr.current.over = true)}
-        onPointerLeave={() => (ptr.current.over = false)}
-      />
+      {!reduceMotion && (
+        <div
+          className="absolute inset-0 cursor-pointer"
+          onClick={() => step(1, "shatter")}
+          onPointerMove={onPointerMove}
+          onPointerEnter={() => (ptr.current.over = true)}
+          onPointerLeave={() => (ptr.current.over = false)}
+        />
+      )}
 
     </div>
   );
