@@ -13,7 +13,6 @@ const MorphOrb = dynamic(() => import("./MorphOrb"), {
 });
 
 const taglines = [
-  "IT Network Engineer",
   "Full Stack Engineer",
   "Mobile App Developer",
   "Network Engineer",
