@@ -8,10 +8,10 @@ export const SITE_DESCRIPTION =
 
 // Link-preview card: a screenshot of the home page hero, 1200x630, in public/.
 // LinkedIn, Discord, Slack etc. cache preview images BY URL, often for days, so
-// when you replace the image, save it under a new name (og-v3.png, ...) and
+// when you replace the image, save it under a new name (og-v4.jpg, ...) and
 // update this path. Overwriting the old file keeps showing the stale card.
 export const OG_IMAGE = {
-  url: "/og-v2.png",
+  url: "/og-v3.jpg",
   width: 1200,
   height: 630,
   alt: "Dillon Gesy - Software Engineer",
