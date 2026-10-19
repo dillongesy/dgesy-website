@@ -6,7 +6,7 @@ export const SITE_TITLE = "Dillon Gesy - Software Engineer";
 export const SITE_DESCRIPTION =
   "Software and IT engineer based in Iowa. Mobile apps, cloud backends, web portals, and network infrastructure.";
 
-// Link-preview card, generated at build time by app/og.png/route.tsx
+// Link-preview card: a screenshot of the home page hero, saved at 1200x630 in public/og.png
 export const OG_IMAGE = {
   url: "/og.png",
   width: 1200,
