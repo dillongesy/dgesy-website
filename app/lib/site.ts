@@ -6,9 +6,12 @@ export const SITE_TITLE = "Dillon Gesy - Software Engineer";
 export const SITE_DESCRIPTION =
   "Software and IT engineer based in Iowa. Mobile apps, cloud backends, web portals, and network infrastructure.";
 
-// Link-preview card: a screenshot of the home page hero, saved at 1200x630 in public/og.png
+// Link-preview card: a screenshot of the home page hero, 1200x630, in public/.
+// LinkedIn, Discord, Slack etc. cache preview images BY URL, often for days, so
+// when you replace the image, save it under a new name (og-v3.png, ...) and
+// update this path. Overwriting the old file keeps showing the stale card.
 export const OG_IMAGE = {
-  url: "/og.png",
+  url: "/og-v2.png",
   width: 1200,
   height: 630,
   alt: "Dillon Gesy - Software Engineer",
